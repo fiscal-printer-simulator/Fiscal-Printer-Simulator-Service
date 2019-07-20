@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <OutputType>Library</OutputType>
+    <TestProjectType>UnitTest</TestProjectType>
+    <RootNamespace>FiscalPrinterSimulator.Unit.Tests</RootNamespace>
+    <AssemblyName>FiscalPrinterSimulator.Unit.Tests</AssemblyName>
+    <Platforms>x64;x86</Platforms>
+    <Configurations>Debug;Release</Configurations>
+    <OutputPath>.\bin\$(Configuration)\$(Platform)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)' == x64">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Castle.Core" Version="4.3.1" />
+    <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThermalFiscalPrinter\ThermalFiscalPrinter.csproj">
+      <Private>true</Private>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

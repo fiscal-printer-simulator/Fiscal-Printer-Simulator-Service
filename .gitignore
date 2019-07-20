@@ -1,0 +1,6 @@
+﻿.vs
+packages
+FiscalPrinterSimulatorService/obj
+FiscalPrinterSimulatorService/bin
+FiscalPrinterSimulatorLibraries/**/obj
+FiscalPrinterSimulatorLibraries/**/bin

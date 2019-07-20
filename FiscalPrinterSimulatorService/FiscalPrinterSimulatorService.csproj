@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform>x64;x86</Platform>
+    <ProjectGuid>{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>FiscalPrinterSimulatorService</RootNamespace>
+    <AssemblyName>FiscalPrinterSimulatorService</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <OutputPath>bin\$(Platform)\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <ApplicationIcon>..\..\..\Resources\Graphics\win_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == Debug">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == Release">
+    <OutputPath>..\..\..\Resources\Binaries</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == x86">
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' == x64">
+    <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Fleck, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fleck.1.1.0\lib\net45\Fleck.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="FiscalPrinterSimulatorService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Models\CurrentLanguageTranslations.cs" />
+    <Compile Include="Models\MergedLanguagesTranslations.cs" />
+    <Compile Include="Models\TranslationsLanguageInfo.cs" />
+    <Compile Include="Models\ReduxActionTypes.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ReduxActions\ActualServerStateAction.cs" />
+    <Compile Include="ReduxActions\ActualTranslationsForSimulatorClientAction.cs" />
+    <Compile Include="ReduxActions\AvaliblePortsAction.cs" />
+    <Compile Include="ReduxActions\BaseReduxAction.cs" />
+    <Compile Include="ReduxActions\SendReceiptOuptutDataAction.cs" />
+    <Compile Include="ReduxActions\TryConnectToComAction.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebsocketActionDispatcher.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FiscalPrinterSimulatorLibraries\BaseFiscalPrinter\BaseFiscalPrinter.csproj">
+      <Project>{d2c6e4f4-14ad-49e8-8289-4f38395c41a4}</Project>
+      <Name>BaseFiscalPrinter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\ThermalFiscalPrinter.csproj">
+      <Project>{becec548-f67f-4ee4-bf41-3d1d9f685e48}</Project>
+      <Name>ThermalFiscalPrinter</Name>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent Condition="Exists('$(SolutionDir)..\..\Resources\Translations')">
+      mkdir $(TargetDir)Translations\ 
+      echo 'Translations Was Copied to Fiscal Printer Binaries'
+      copy $(SolutionDir)..\..\Resources\Translations $(TargetDir)Translations\
+      </PostBuildEvent>
+  </PropertyGroup>
+</Project>
