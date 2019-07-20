@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FiscalPrinterSimulator.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [TestFixture]
     public class SetupClockCommandHandlerTest

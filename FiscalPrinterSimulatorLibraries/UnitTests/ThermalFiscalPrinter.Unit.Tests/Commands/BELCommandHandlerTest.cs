@@ -3,7 +3,7 @@ using FiscalPrinterSimulatorLibraries.Models;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace FiscalPrinterSimulator.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [TestFixture]
     public class BELCommandHandlerTests

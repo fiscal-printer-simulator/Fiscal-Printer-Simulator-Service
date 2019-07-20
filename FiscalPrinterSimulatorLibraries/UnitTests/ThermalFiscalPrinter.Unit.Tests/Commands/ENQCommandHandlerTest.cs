@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FiscalPrinterSimulator.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [NUnit.Framework.TestFixture]
     public class ENQCommandHandlerTest

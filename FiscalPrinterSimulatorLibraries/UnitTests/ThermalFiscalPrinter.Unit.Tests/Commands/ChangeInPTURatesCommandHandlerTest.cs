@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace FiscalPrinterSimulator.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [TestFixture]
     public class ChangeInPTURatesCommandHandlerTest

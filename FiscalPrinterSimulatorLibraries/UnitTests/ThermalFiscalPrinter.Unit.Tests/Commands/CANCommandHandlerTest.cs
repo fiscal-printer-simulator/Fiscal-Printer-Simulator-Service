@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
 
-namespace FiscalPrinterSimulator.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [TestFixture]
     public class CANCommandHandlerTest

@@ -4,8 +4,8 @@
     <TargetFramework>net472</TargetFramework>
     <OutputType>Library</OutputType>
     <TestProjectType>UnitTest</TestProjectType>
-    <RootNamespace>FiscalPrinterSimulator.Unit.Tests</RootNamespace>
-    <AssemblyName>FiscalPrinterSimulator.Unit.Tests</AssemblyName>
+    <RootNamespace>ThermalFiscalPrinter.Unit.Tests</RootNamespace>
+    <AssemblyName>ThermalFiscalPrinter.Unit.Tests</AssemblyName>
     <Platforms>x64;x86</Platforms>
     <Configurations>Debug;Release</Configurations>
     <OutputPath>.\bin\$(Configuration)\$(Platform)\</OutputPath>
@@ -14,6 +14,10 @@
 
   <PropertyGroup Condition="'$(Platform)' == x64">
     <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <OutputPath>..\..\..\..\..\Resources\TestBinaries</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
