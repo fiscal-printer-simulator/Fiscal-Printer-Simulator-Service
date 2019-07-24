@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Text;
+using FiscalPrinterSimulatorLibraries.Extensions;
 using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
 namespace FiscalPrinterSimulatorLibraries.Models
@@ -22,6 +24,7 @@ namespace FiscalPrinterSimulatorLibraries.Models
                 new PTUType{ ActualPercentageValue = 101, TotalValueOfSalesInType = 0 , Type = PTU.F},
                 new PTUType{ ActualPercentageValue = 101, TotalValueOfSalesInType = 0 , Type = PTU.G},
             };
+            FiscalPrinterHeader = CreateDefaulHeader();
         }
         public DiscountCalculationMethod DiscountCalculationType;
         public List<SlipLine> SlipLines;
@@ -45,5 +48,16 @@ namespace FiscalPrinterSimulatorLibraries.Models
         public double ActualDrawerAmmount { get; set; }
 
         public ErrorHandlingType ErrorHandlingType { get; set; }
+
+        private string CreateDefaulHeader()
+        {
+            StringBuilder headerBuilder = new StringBuilder();
+            headerBuilder.AppendLine("Michal Wojcik".PadCenter(Constants.ReciptWidth));
+            headerBuilder.AppendLine(".Net Developer".PadCenter(Constants.ReciptWidth));
+            headerBuilder.AppendLine("40-000 Katowice".PadCenter(Constants.ReciptWidth));
+            headerBuilder.AppendLine("NIP 999-99-99-999".PadCenter(Constants.ReciptWidth));
+            headerBuilder.AppendLine();
+            return headerBuilder.ToString();
+        }
     }
 }
