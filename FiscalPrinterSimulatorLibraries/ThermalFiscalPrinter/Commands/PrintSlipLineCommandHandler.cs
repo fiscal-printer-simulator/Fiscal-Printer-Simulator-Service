@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using FiscalPrinterSimulatorLibraries.Exceptions;
+using FiscalPrinterSimulatorLibraries.Extensions;
 using FiscalPrinterSimulatorLibraries.Models;
 using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
@@ -181,8 +182,12 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             if (!fiscalPrinterState.SlipLines.Any())
             {
-                slipBuilder.AppendLine(fiscalPrinterState.FiscalPrinterHeader);
+                var fiscalPrinterDate = new DateTime().AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("YYYY-MM-DD");
+                var transactionCounter = fiscalPrinterState.TransactionCounter.ToString();
+                slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
+                slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
                 slipBuilder.AppendLine("".PadLeft(Constants.ReciptWidth, '-'));
+
             }
 
 
@@ -242,7 +247,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
 
-           
+
             fiscalPrinterState.SlipLines.Add(slipLine);
             return new CommandHandlerResponse(slipBuilder.ToString());
         }

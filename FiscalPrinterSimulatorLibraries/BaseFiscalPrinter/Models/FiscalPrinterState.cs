@@ -9,6 +9,7 @@ namespace FiscalPrinterSimulatorLibraries.Models
     {
         public FiscalPrinterState()
         {
+            TransactionCounter = 0;
             LinesOnTransaction = -1;
             TimeDiffrenceInMinutes = int.MinValue;
             NextFiscalPrinterReciptId = 1;
@@ -40,6 +41,7 @@ namespace FiscalPrinterSimulatorLibraries.Models
         public bool IsInTransactionState;
         public bool LastTransactionSuccess;
 
+        public int TransactionCounter { get; set; }
         public int LinesOnTransaction { get; set; }
         public int NextFiscalPrinterReciptId;
 
