@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
 
@@ -33,6 +34,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 {
                     fiscalPrinterState.LinesOnTransaction = numberOfLines;
                     fiscalPrinterState.IsInTransactionState = true;
+                    fiscalPrinterState.SlipLines = new List<SlipLine>();
                     return new CommandHandlerResponse();
                 }
             }

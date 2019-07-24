@@ -11,6 +11,7 @@ namespace FiscalPrinterSimulatorLibraries.Models
             TimeDiffrenceInMinutes = int.MinValue;
             NextFiscalPrinterReciptId = 1;
             DiscountCalculationType = DiscountCalculationMethod.Standard;
+            SlipLines = new List<SlipLine>();
             PTURates = new List<PTUType>
             {
                 new PTUType{ ActualPercentageValue = 101, TotalValueOfSalesInType = 0 , Type = PTU.A},
@@ -23,7 +24,7 @@ namespace FiscalPrinterSimulatorLibraries.Models
             };
         }
         public DiscountCalculationMethod DiscountCalculationType;
-
+        public List<SlipLine> SlipLines;
         public string FiscalPrinterHeader;
 
         public int TimeDiffrenceInMinutes;
