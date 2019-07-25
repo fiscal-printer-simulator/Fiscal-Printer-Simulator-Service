@@ -39,7 +39,7 @@ namespace FiscalPrinterSimulatorLibraries
                 case "$l":
                     return new PrintSlipLineCommandHandler(command);
                 case "$e":
-                    return new CancelTransactionCommandHandler(command);
+                    return new CancelOrApproveTransactionCommandHandler(command);
 
 
                 default:
