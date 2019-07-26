@@ -71,7 +71,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                 }
 
-                var parametersMatch = new Regex(@"(.{3})\r((.*\r){0,3})(([\d\.\,]+\/){2,3})").Match(command.Parameters);
+                var parametersMatch = new Regex(@"(\w{3})\r((.*\r){0,3})([\d\.\,]+\/)([\d\.\,]+\/)([\d\.\,]+\/)*").Match(command.Parameters);
                 if (!parametersMatch.Success)
                 {
                     throw new FP_WrongNumberOfArgumentsException("Command code is not ok. Please check it out and try again.");
