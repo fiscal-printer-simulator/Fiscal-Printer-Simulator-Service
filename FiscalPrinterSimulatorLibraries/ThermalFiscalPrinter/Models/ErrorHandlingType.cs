@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FiscalPrinterSimulatorLibraries.Models
+namespace ThermalFiscalPrinterSimulatorLibraries.Models
 {
     public enum ErrorHandlingType
     {

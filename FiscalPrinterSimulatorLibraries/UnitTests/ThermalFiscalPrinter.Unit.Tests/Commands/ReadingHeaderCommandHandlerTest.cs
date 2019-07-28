@@ -1,9 +1,8 @@
-﻿using FiscalPrinterSimulatorLibraries;
-using FiscalPrinterSimulatorLibraries.Commands;
-using FiscalPrinterSimulatorLibraries.Models;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
 using NUnit.Framework;
-using System.Linq;
 using System.Text;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -24,7 +23,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             fiscalPrinterHeader.AppendLine("                     XX XX XX                           ");
 
 
-            var command = new FiscalPrinterCommand(null, "#u", null);
+            var command = new ThermalFiscalPrinterCommand(null, "#u", null);
             var commandHandler = new ReadingHeaderCommandHandler(command);
             var fiscalPrinterState = new FiscalPrinterState()
             {
@@ -57,7 +56,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 
 
 
-            var command = new FiscalPrinterCommand(null, "#u", null);
+            var command = new ThermalFiscalPrinterCommand(null, "#u", null);
             var commandHandler = new ReadingHeaderCommandHandler(command);
             var fiscalPrinterState = new FiscalPrinterState()
             {

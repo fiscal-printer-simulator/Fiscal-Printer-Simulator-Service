@@ -1,22 +1,22 @@
 ﻿using FiscalPrinterSimulatorLibraries.Commands;
-using FiscalPrinterSimulatorLibraries.Models;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
     [NUnit.Framework.TestFixture]
     public class ENQCommandHandlerTest
     {
-        FiscalPrinterCommand _command;
+        ThermalFiscalPrinterCommand _command;
         ENQCommandHandler _commandHandler;
 
         [SetUp]
         public void SetUpMethod()
         {
-            _command = new FiscalPrinterCommand(null, null, null, null, null);
+            _command = new ThermalFiscalPrinterCommand(null, null, null, null, null);
             _commandHandler = new ENQCommandHandler(_command);
         }
 

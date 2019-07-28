@@ -1,27 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using FiscalPrinterSimulatorLibraries;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Extensions;
 using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     ///  Command handler for command LBTREXITCAN
     /// </summary>
     public class CancelTransactionCommandHandler : BaseCommandHandler
     {
-        public CancelTransactionCommandHandler(FiscalPrinterCommand command) : base(command)
+        public CancelTransactionCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
-            fiscalPrinterState.IsInTransactionState = false;
+            var state = fiscalPrinterState as FiscalPrinterState;
 
-            if (!fiscalPrinterState.SlipLines.Any())
+            state.IsInTransactionState = false;
+
+            if (!state.SlipLines.Any())
             {
                 return new CommandHandlerResponse();
             }
@@ -33,7 +36,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             var printerNo = "";
             var cashierLogin = "";
-            var actualTime = new DateTime().AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
+            var actualTime = new DateTime().AddMinutes(state.TimeDiffrenceInMinutes).ToString("HH:mm");
             var specialNumberRow = "";
 
             if(commandParameters.Length == 1)

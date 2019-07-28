@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using FiscalPrinterSimulatorLibraries;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Extensions;
 using FiscalPrinterSimulatorLibraries.Models;
-using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
+using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     ///  Command handler for command LBTRSLN
     /// </summary>
     public class PrintSlipLineCommandHandler : BaseCommandHandler
     {
-        public PrintSlipLineCommandHandler(FiscalPrinterCommand command) : base(command)
+        public PrintSlipLineCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
-
+            var state = fiscalPrinterState as FiscalPrinterState;
             var slipLine = new SlipLine();
 
 
@@ -180,10 +183,10 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             StringBuilder slipBuilder = new StringBuilder();
 
 
-            if (!fiscalPrinterState.SlipLines.Any())
+            if (!state.SlipLines.Any())
             {
-                var fiscalPrinterDate = new DateTime().AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("YYYY-MM-DD");
-                var transactionCounter = fiscalPrinterState.TransactionCounter.ToString();
+                var fiscalPrinterDate = new DateTime().AddMinutes(state.TimeDiffrenceInMinutes).ToString("YYYY-MM-DD");
+                var transactionCounter = state.TransactionCounter.ToString();
                 slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
                 slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
                 slipBuilder.AppendLine("".PadLeft(Constants.ReciptWidth, '-'));
@@ -248,7 +251,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
 
 
-            fiscalPrinterState.SlipLines.Add(slipLine);
+            state.SlipLines.Add(slipLine);
             return new CommandHandlerResponse(slipBuilder.ToString());
         }
 

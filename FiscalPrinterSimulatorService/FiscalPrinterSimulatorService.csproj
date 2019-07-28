@@ -33,6 +33,18 @@
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DefineConstants>DEBUG;x64</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DefineConstants>x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DefineConstants>x86</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <DefineConstants>x64</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Fleck, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fleck.1.1.0\lib\net45\Fleck.dll</HintPath>
@@ -83,11 +95,6 @@
     <ProjectReference Include="..\FiscalPrinterSimulatorLibraries\BaseFiscalPrinter\BaseFiscalPrinter.csproj">
       <Project>{d2c6e4f4-14ad-49e8-8289-4f38395c41a4}</Project>
       <Name>BaseFiscalPrinter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\ThermalFiscalPrinter.csproj">
-      <Project>{becec548-f67f-4ee4-bf41-3d1d9f685e48}</Project>
-      <Name>ThermalFiscalPrinter</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

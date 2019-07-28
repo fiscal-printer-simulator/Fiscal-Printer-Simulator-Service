@@ -1,10 +1,12 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Commands;
+using FiscalPrinterSimulatorLibraries.Models;
+using FiscalPrinterSimulatorLibraries;
 
-namespace FiscalPrinterSimulatorLibraries
+namespace ThermalFiscalPrinterSimulatorLibraries
 {
     public class ThermalFiscalPrinter : IFiscalPrinter
     {
@@ -33,7 +35,7 @@ namespace FiscalPrinterSimulatorLibraries
             return commandHandlerResults;
         }
 
-        private IEnumerable<FiscalPrinterCommand> SplitByCommands(string inputCommandChars)
+        private IEnumerable<BaseFiscalPrinterCommand> SplitByCommands(string inputCommandChars)
         {
             string splittingPattern = @"\x1bP((.*)([\^\@\#\$][a-zA-Z])((.+[\x0d/\xFF])+(?=[\w\d]{2}))*)([\w\d]{2})*\x1b|(\x10)|(\x18)|(\x07)|(\x05)";
             Regex regex = new Regex(splittingPattern);
@@ -70,7 +72,7 @@ namespace FiscalPrinterSimulatorLibraries
 
                 var parameters = matchesGroups[4].Value;
                 var passedChecksum = matchesGroups[6].Value;
-                yield return new FiscalPrinterCommand(pnArguments, commandName, parameters, passedChecksum, checksumBaseToCalc);
+                yield return new ThermalFiscalPrinterCommand(pnArguments, commandName, parameters, passedChecksum, checksumBaseToCalc);
 
             }
         }

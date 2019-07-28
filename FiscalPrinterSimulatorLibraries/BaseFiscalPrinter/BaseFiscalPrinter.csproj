@@ -9,7 +9,7 @@
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)' == Installer">
+  <PropertyGroup Condition="'$(Configuration)' == Release">
     <OutputPath>..\..\..\..\Resources\Binaries</OutputPath>
   </PropertyGroup>
 </Project>

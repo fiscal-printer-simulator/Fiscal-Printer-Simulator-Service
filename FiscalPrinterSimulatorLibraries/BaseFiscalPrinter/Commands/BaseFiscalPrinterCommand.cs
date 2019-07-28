@@ -4,9 +4,9 @@ using System.Text;
 
 namespace FiscalPrinterSimulatorLibraries.Commands
 {
-    public class FiscalPrinterCommand
+    public class BaseFiscalPrinterCommand
     {
-        private readonly Encoding _encoding = Encoding.ASCII;
+        protected readonly Encoding _encoding = Encoding.ASCII;
 
         public IEnumerable<string> PnArguments { get; }
         public string Name { get; }
@@ -14,7 +14,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
         public bool IsChecksumValid { get; }
         public string ChecksumString { get; }
 
-        public FiscalPrinterCommand(IEnumerable<string> PnArguments, string Name, string Parameters, string PassedChecksum, string ChecksumBaseToCalculation)
+        public BaseFiscalPrinterCommand(IEnumerable<string> PnArguments, string Name, string Parameters, string PassedChecksum, string ChecksumBaseToCalculation)
         {
             this.Name = Name;
             this.Parameters = Parameters;
@@ -24,7 +24,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
         }
 
 
-        public FiscalPrinterCommand(IEnumerable<string> PnArguments, string Name, string Parameters)
+        public BaseFiscalPrinterCommand(IEnumerable<string> PnArguments, string Name, string Parameters)
         {
             this.Name = Name;
             this.PnArguments = PnArguments ?? new List<string>();
@@ -44,13 +44,10 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             return string.IsNullOrEmpty(checksumContent) ? "" : check.ToString("X2");
         }
 
-        public override string ToString()
-        {
-            return Constants.ASCICodeESC + "P" + string.Join(";", PnArguments) + Name + Parameters + Constants.ASCICodeESC + Constants.ASCICodeEndCommand;
-        }
+       
         public virtual byte[] ToBytesArray()
         {
-            return Constants.ThermalBaseEncoding.GetBytes(this.ToString());
+            return _encoding.GetBytes(this.ToString());
         }
 
     }

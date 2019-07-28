@@ -1,19 +1,20 @@
-﻿using FiscalPrinterSimulatorLibraries.Models;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
+using FiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBIDRQ
     /// </summary>
     public class SendTypeAndSoftwareVersionCommandHandler : BaseCommandHandler
     {
-        public SendTypeAndSoftwareVersionCommandHandler(FiscalPrinterCommand command) : base(command)
+        public SendTypeAndSoftwareVersionCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState) =>
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState) =>
             new CommandHandlerResponse(
-                new FiscalPrinterCommand(new string[] { "1" }, "#v", "POSNET Thermal/4.01")
+                new ThermalFiscalPrinterCommand(new string[] { "1" }, "#v", $"{Constants.ProtocolName}/{Constants.ProtocolVersion}")
                 );
     }
 }
