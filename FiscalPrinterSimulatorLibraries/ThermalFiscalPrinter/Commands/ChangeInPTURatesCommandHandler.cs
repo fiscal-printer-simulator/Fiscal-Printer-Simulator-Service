@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using FiscalPrinterSimulatorLibraries;
@@ -100,7 +101,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
         {
             var ptuValue = state.PTURates.First(m => m.Type == PTUType).ActualPercentageValue;
 
-            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00") + " %";
+            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.CreateSpecificCulture("pl-PL")) + " %";
             var numberOfSpace = Constants.ReciptWidth - ptuRateString.Length;
             return $"PTU {PTUType.ToString()}".PadRight(numberOfSpace) + ptuRateString;
         }

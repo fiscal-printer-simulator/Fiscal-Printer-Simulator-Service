@@ -120,7 +120,7 @@ namespace FiscalPrinterSimulatorService
 
             var plugins = Directory.GetFiles(path, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)
                 .Select(m=> Path.GetFullPath(m))
-                .Where(m =>!m.Contains("Base", StringComparison.OrdinalIgnoreCase))
+                .Where(m =>!m.Contains("Base"))
                 .Select(m => Assembly.LoadFrom(m))
                 .Where(m => m != null)
                 .SelectMany(m => m.GetTypes())
