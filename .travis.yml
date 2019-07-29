@@ -1,0 +1,7 @@
+language: csharp
+solution: "./FiscalPrinterSimulator.sln"
+install:
+- travis_retry nuget restore -source "https://www.nuget.org/api/v2" ./FiscalPrinterSimulator.sln
+script:
+- xbuild ./FiscalPrinterSimulator.sln
+- mono ./Fibonacci/packages/xunit.runner.console*/tools/xunit.console.exe ./FiscalPrinterSimulatorLibraries/UnitTests/ThermalFiscalPrinter.Unit.Tests/bin/Debug/x64/ThermalFiscalPrinter.Unit.Tests.dll
