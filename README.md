@@ -1,4 +1,5 @@
 # Fiscal Printer Simulator Service
+[![Build Status](https://travis-ci.org/fiscal-printer-simulator/Fiscal-Printer-Simulator-Service.svg?branch=master)](https://travis-ci.org/fiscal-printer-simulator/Fiscal-Printer-Simulator-Service)
 
 This is service for emulate real fiscal printer device.  
 You can test your software integrated with fiscal devices without any costs.
