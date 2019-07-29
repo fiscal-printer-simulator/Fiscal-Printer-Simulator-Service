@@ -101,7 +101,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
         {
             var ptuValue = state.PTURates.First(m => m.Type == PTUType).ActualPercentageValue;
 
-            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.InvariantCulture).Replace(".",",") + " %";
+            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.CreateSpecificCulture("pl-PL")) + " %";
             var numberOfSpace = Constants.ReciptWidth - ptuRateString.Length;
             return $"PTU {PTUType.ToString()}".PadRight(numberOfSpace) + ptuRateString;
         }
@@ -110,52 +110,55 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
         private static void ChangePTURatesByCommand(FiscalPrinterState fiscalPrinterState, string[] ptuParameters)
         {
+
+            var polishCulture = CultureInfo.CreateSpecificCulture("pl-PL");
+
             if (ptuParameters.Length > 0)
             {
                 fiscalPrinterState.PTURates[(int)PTU.A].ActualPercentageValue =
-                    double.TryParse(ptuParameters[0], out double rateValue) ?
+                    double.TryParse(ptuParameters[0],NumberStyles.Number, polishCulture, out double rateValue) ?
                     rateValue :
                     Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 1)
             {
                 fiscalPrinterState.PTURates[(int)PTU.B].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[1], out double rateValue) ?
+                                   double.TryParse(ptuParameters[1], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 2)
             {
                 fiscalPrinterState.PTURates[(int)PTU.C].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[2], out double rateValue) ?
+                                   double.TryParse(ptuParameters[2], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 3)
             {
                 fiscalPrinterState.PTURates[(int)PTU.D].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[3], out double rateValue) ?
+                                   double.TryParse(ptuParameters[3], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 4)
             {
                 fiscalPrinterState.PTURates[(int)PTU.E].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[4], out double rateValue) ?
+                                   double.TryParse(ptuParameters[4], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 5)
             {
                 fiscalPrinterState.PTURates[(int)PTU.F].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[5], out double rateValue) ?
+                                   double.TryParse(ptuParameters[5], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 6)
             {
                 fiscalPrinterState.PTURates[(int)PTU.G].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[6], out double rateValue) ?
+                                   double.TryParse(ptuParameters[6], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
