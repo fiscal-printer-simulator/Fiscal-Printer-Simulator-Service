@@ -101,7 +101,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
         {
             var ptuValue = state.PTURates.First(m => m.Type == PTUType).ActualPercentageValue;
 
-            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.CreateSpecificCulture("pl-PL")) + " %";
+            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.InvariantCulture).Replace(".",",") + " %";
             var numberOfSpace = Constants.ReciptWidth - ptuRateString.Length;
             return $"PTU {PTUType.ToString()}".PadRight(numberOfSpace) + ptuRateString;
         }
