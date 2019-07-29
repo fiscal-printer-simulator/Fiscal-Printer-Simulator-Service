@@ -1,6 +1,4 @@
-﻿using FiscalPrinterSimulatorLibraries;
-using FiscalPrinterSimulatorService.ReduxActions;
-using Fleck;
+﻿using Fleck;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +6,8 @@ using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
 using System.ServiceProcess;
+using FiscalPrinterSimulatorLibraries;
+using FiscalPrinterSimulatorService.ReduxActions;
 
 namespace FiscalPrinterSimulatorService
 {
@@ -27,6 +27,7 @@ namespace FiscalPrinterSimulatorService
             _server = new WebSocketServer("ws://127.0.0.1:8181");
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_DataReceived);
             this.ServiceName = "Fiscal Printer Simulator";
+            LoadFiscalPrinterHandlingPlugins();
         }
 
         public void RunServiceAsConsoleApp(string[] args)
@@ -112,23 +113,25 @@ namespace FiscalPrinterSimulatorService
         {
             var path = "./Plugins";
 #if DEBUG && x64
-            path = "../FiscalPrinterSimulatorLibraries/ThermalFiscalPrinter/bin/x64/net472";
+            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x64\netcoreapp2.2";
 #elif DEBUG && x86
-            path = "../FiscalPrinterSimulatorLibraries/ThermalFiscalPrinter/bin/x86/net472";
+            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x86\netcoreapp2.2";
 #endif
 
             var plugins = Directory.GetFiles(path, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)
-                .Where(m => m.StartsWith("Base", StringComparison.OrdinalIgnoreCase))
-                .Select(m => Assembly.Load(m))
+                .Select(m=> Path.GetFullPath(m))
+                .Where(m =>!m.Contains("Base", StringComparison.OrdinalIgnoreCase))
+                .Select(m => Assembly.LoadFrom(m))
                 .Where(m => m != null)
                 .SelectMany(m => m.GetTypes())
                 .ToList()
-                .Select(m => (m.IsInterface || m.IsAbstract) ? null : m.GetInterface(typeof(IFiscalPrinter).FullName))
-                .Where(m=>m != null);
+                .Where(m => !m.IsInterface && !m.IsAbstract && m.GetInterface(typeof(IFiscalPrinter).FullName) != null)
+                .Select(m=> (IFiscalPrinter)Activator.CreateInstance(m))
+                .ToList();
 
             if (plugins.Count() == 1)
             {
-                _printer = (IFiscalPrinter)Activator.CreateInstance(plugins.First());
+                _printer = plugins.First();
             }
 
 

@@ -5,6 +5,7 @@ namespace FiscalPrinterSimulatorLibraries
 {
     public interface IFiscalPrinter
     {
+        string ProtocolName { get; }
         IEnumerable<CommandHandlerResponse> HandleReceivedData(string command);
     }
 }

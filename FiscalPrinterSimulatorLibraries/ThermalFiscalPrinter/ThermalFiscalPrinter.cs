@@ -14,6 +14,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries
 
         public ThermalFiscalPrinter() => _state = new FiscalPrinterState();
 
+        public string ProtocolName => Constants.ProtocolName;
 
         public IEnumerable<CommandHandlerResponse> HandleReceivedData(string receivedStringData)
         {

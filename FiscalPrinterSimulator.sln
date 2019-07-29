@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FiscalPrinterSimulatorService", "FiscalPrinterSimulatorService\FiscalPrinterSimulatorService.csproj", "{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FiscalPrinterSimulatorLibraries", "FiscalPrinterSimulatorLibraries", "{39D1E4A4-CAE1-4CF3-AA98-65D9311CD1D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalFiscalPrinter", "FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\ThermalFiscalPrinter.csproj", "{BECEC548-F67F-4EE4-BF41-3D1D9F685E48}"
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalFiscalPrinter.Unit.Tests", "FiscalPrinterSimulatorLibraries\UnitTests\ThermalFiscalPrinter.Unit.Tests\ThermalFiscalPrinter.Unit.Tests.csproj", "{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FiscalPrinterSimulatorService", "FiscalPrinterSimulatorService\FiscalPrinterSimulatorService.csproj", "{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -23,14 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Debug|x64.ActiveCfg = Debug|x64
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Debug|x64.Build.0 = Debug|x64
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Debug|x86.ActiveCfg = Debug|x86
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Debug|x86.Build.0 = Debug|x86
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Release|x64.ActiveCfg = Release|x64
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Release|x64.Build.0 = Release|x64
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Release|x86.ActiveCfg = Release|x86
-		{1190CE71-9A08-4DDB-9F91-D2A733AF5FDC}.Release|x86.Build.0 = Release|x86
 		{BECEC548-F67F-4EE4-BF41-3D1D9F685E48}.Debug|x64.ActiveCfg = Debug|x64
 		{BECEC548-F67F-4EE4-BF41-3D1D9F685E48}.Debug|x64.Build.0 = Debug|x64
 		{BECEC548-F67F-4EE4-BF41-3D1D9F685E48}.Debug|x86.ActiveCfg = Debug|x86
@@ -55,6 +47,14 @@ Global
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x64.Build.0 = Release|x64
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x86.ActiveCfg = Release|x86
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x86.Build.0 = Release|x86
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x64.ActiveCfg = Debug|x64
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x64.Build.0 = Debug|x64
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x86.ActiveCfg = Debug|x86
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x86.Build.0 = Debug|x86
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x64.ActiveCfg = Release|x64
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x64.Build.0 = Release|x64
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x86.ActiveCfg = Release|x86
+		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
