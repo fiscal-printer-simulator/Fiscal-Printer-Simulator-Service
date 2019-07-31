@@ -41,7 +41,7 @@ namespace FiscalPrinterSimulatorLibraries
 
             for (int i = 0; i < matches.Count; i++)
             {
-                var matchesGroups = matches[0].Groups;
+                var matchesGroups = matches[i].Groups;
 
                 var checksumBaseToCalc = matchesGroups[1].Value;
                 var pnArguments = matchesGroups[2].Value.Split(';');

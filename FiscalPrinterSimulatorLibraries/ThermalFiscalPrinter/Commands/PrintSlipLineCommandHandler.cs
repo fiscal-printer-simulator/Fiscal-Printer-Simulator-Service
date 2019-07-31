@@ -19,6 +19,10 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
         public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
         {
+            if (!fiscalPrinterState.IsInTransactionState)
+            {
+                throw new FP_IllegalOperationException("Fiscal Printer is not in transaction state.");
+            }
 
             var slipLine = new SlipLine();
 
@@ -182,7 +186,9 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             if (!fiscalPrinterState.SlipLines.Any())
             {
-                var fiscalPrinterDate = new DateTime().AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("YYYY-MM-DD");
+                fiscalPrinterState.TransactionCounter += 1;
+
+                var fiscalPrinterDate = DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("yyyy-MM-dd");
                 var transactionCounter = fiscalPrinterState.TransactionCounter.ToString();
                 slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
                 slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
@@ -217,7 +223,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 slipBuilder.AppendLine("Opis: " + productDescription);
             }
 
-            if (discountDescription != DiscountDescription.NONE && slipLine.DiscountValue != 0)
+            if (slipLine.DiscountValue != 0)
             {
 
                 discountDescriptionText = discountDescription == DiscountDescription.CUSTOM
@@ -243,10 +249,8 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                                 Constants.ReciptWidth - discountSlipLineRightPart.Length)
                                 + discountSlipLineRightPart);
 
+                slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
             }
-
-            slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
-
 
             fiscalPrinterState.SlipLines.Add(slipLine);
             return new CommandHandlerResponse(slipBuilder.ToString());
@@ -294,7 +298,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 default:
                     break;
             }
-            return string.Empty;
+            return "rabat";
         }
 
     }

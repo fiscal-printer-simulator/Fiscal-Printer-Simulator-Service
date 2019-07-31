@@ -23,6 +23,11 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
         public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
         {
+            if (!fiscalPrinterState.IsInTransactionState)
+            {
+                throw new FP_IllegalOperationException("Fiscal Printer is not in transaction state.");
+            }
+
             if (!command.PnArguments.Any())
             {
                 throw new FP_WrongNumberOfArgumentsException("This command required at least one argument.");
@@ -36,7 +41,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             int ammountOfAdditionalLines = 0;
             double passedTotalAmmount = 0;
             double passedPaidValue = 0;
-            double passedDiscountPercentage = 0;
+            double passedDiscountValue = 0;
             DiscountType discountType = DiscountType.NO_DISCOUNT;
 
 
@@ -71,7 +76,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                 }
 
-                var parametersMatch = new Regex(@"(\w{3})\r((.*\r){0,3})([\d\.\,]+\/)([\d\.\,]+\/)([\d\.\,]+\/)*").Match(command.Parameters);
+                var parametersMatch = new Regex(@"(\w{3})\r((.*\r){0,3})(([\d\.\,]+)\/)(([\d\.\,]+)\/)(([\d\.\,]+)\/)*").Match(command.Parameters);
                 if (!parametersMatch.Success)
                 {
                     throw new FP_WrongNumberOfArgumentsException("Command code is not ok. Please check it out and try again.");
@@ -87,43 +92,112 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                     fiscalPrinterState.CashierLogin = passedParameterCode.Substring(1);
                 }
 
-                var additionalLines = !parametersMatch.Groups[1].Success ?
+                var additionalLines = !parametersMatch.Groups[2].Success ?
                                         new string[0]
-                                        : parametersMatch.Groups[1].Value.Split((char)Constants.ASCICodeCR);
+                                        : parametersMatch.Groups[2].Value
+                                        .Split((char)Constants.ASCICodeCR)
+                                        .Where(m=> !string.IsNullOrWhiteSpace(m))
+                                        .ToArray();
                 if (ammountOfAdditionalLines != additionalLines.Length)
                 {
                     throw new FP_IllegalOperationException("Passed additional lines argument and passed lines are not equal.");
                 }
 
-                if (!double.TryParse(parametersMatch.Groups[4].Value, out passedPaidValue))
+                if (!double.TryParse(parametersMatch.Groups[5].Value, out passedPaidValue))
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of PAID value.");
                 }
 
-                if (!double.TryParse(parametersMatch.Groups[4].Value, out passedTotalAmmount))
+                if (!double.TryParse(parametersMatch.Groups[7].Value, out passedTotalAmmount))
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of TOTAL value.");
                 }
-                else if (passedTotalAmmount != fiscalPrinterState.SlipLines.Sum(m => m.TotalPrice))
+                else if (passedTotalAmmount != fiscalPrinterState.SlipLines.Sum(m => m.TotalWithDiscount))
                 {
-                    // wrong total sum ( not provided discount yet)
+                    throw new FP_IllegalOperationException("Wrong passed TOTAL value. It not equals with passed fiscal printer line.");
+                    // TODO: Discount Handling
                 }
 
-
-                if (command.PnArguments.Count() == 6 && !double.TryParse(parametersMatch.Groups[3].Value, out passedDiscountPercentage))
+                if (command.PnArguments.Count() == 6
+                    && discountType != DiscountType.NO_DISCOUNT
+                    && !double.TryParse(parametersMatch.Groups[9].Value, out passedDiscountValue))
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of DISCOUNT value.");
                 }
 
 
+                StringBuilder approveTransactionBuilder = new StringBuilder();
+                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
+                if (discountType != DiscountType.NO_DISCOUNT)
+                {
+                    //TODO: discount handling
+                }
+
+                var ptuActualValues = fiscalPrinterState.PTURates
+                    .Where(m => m.ActualPercentageValue < 100)
+                    .ToDictionary(m => m.Type, m => m.ActualPercentageValue);
+
+                var PTUsOverview = fiscalPrinterState.SlipLines
+                    .GroupBy(m => m.PTU)
+                    .Select(m => new
+                    {
+                        type = m.Key,
+                        sum = m.Sum(slip => slip.TotalWithDiscount),
+                        ptuPercentage = ptuActualValues[m.Key],
+                        ptuVal = 
+                        (m.Sum(slip => slip.TotalWithDiscount) * (ptuActualValues[m.Key] / 100))
+                        /
+                        (1 + (ptuActualValues[m.Key] / 100))
+                    });
+
+                foreach (var ptuOVerview in PTUsOverview)
+                {
+                    var totalInPTU = ptuOVerview.sum.ToString("0.00");
+                    var totalInPTULeftLine = $"Sprzed. opodatk. {ptuOVerview.type.ToString()}"
+                        .PadRight(Constants.ReciptWidth - totalInPTU.Length);
+                    var totalPTUVal = ptuOVerview.ptuVal.ToString("0.00");
+                    var totalPTUValLeftLine = $"Kwota PTU {ptuOVerview.type.ToString()} {ptuOVerview.ptuPercentage} %"
+                        .PadRight(Constants.ReciptWidth - totalPTUVal.Length);
 
 
-                // here will be continous command handling
+                    approveTransactionBuilder.AppendLine(totalInPTULeftLine + totalInPTU);
+                    approveTransactionBuilder.AppendLine(totalPTUValLeftLine + totalPTUVal);
+                }
+                var totalPTUsValue = PTUsOverview.Sum(m => m.ptuVal).ToString("0.00");
+                approveTransactionBuilder.AppendLine("ŁĄCZNA KWOTA PTU".PadRight(Constants.ReciptWidth - totalPTUsValue.Length) + totalPTUsValue);
 
+                var totalSum = passedTotalAmmount.ToString("0.00");
+                approveTransactionBuilder.AppendLine("S U M A".PadRight(Constants.ReciptWidth - totalSum.Length) + totalSum);
 
+                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
 
+                if (passedPaidValue > passedTotalAmmount)
+                {
 
-                throw new NotImplementedException("Not implemented yet. I'm working on it.");
+                    var paidValue = passedPaidValue.ToString("0.00");
+                    approveTransactionBuilder.AppendLine("Gotówka".PadRight(Constants.ReciptWidth - totalSum.Length) + totalSum);
+
+                    var changeValue = (passedPaidValue - passedTotalAmmount).ToString("0.00");
+                    approveTransactionBuilder.AppendLine("Reszta".PadRight(Constants.ReciptWidth - changeValue.Length) + changeValue);
+                }
+
+                var printId = new Random().Next(0,9999).ToString("0000");
+                var footerLeftLine = $"{printId} #Kasa: {fiscalPrinterState.PrinterCode}  Kasjer: {fiscalPrinterState.CashierLogin}";
+                var transactionTime = DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
+                approveTransactionBuilder.AppendLine(footerLeftLine.PadRight(Constants.ReciptWidth - transactionTime.Length) + transactionTime);
+
+                var fiscalIdAndLogo = "{PL} ABC "+new Random().Next(10000,99999);
+                approveTransactionBuilder.AppendLine(fiscalIdAndLogo.PadCenter(Constants.ReciptWidth));
+                approveTransactionBuilder.AppendLine();
+
+                foreach (var additionalLine in additionalLines)
+                {
+                    approveTransactionBuilder.AppendLine(additionalLine.PadCenter(Constants.ReciptWidth));
+                }
+
+                fiscalPrinterState.IsInTransactionState = false;
+
+                return new CommandHandlerResponse(approveTransactionBuilder.ToString());
 
             }
         }
