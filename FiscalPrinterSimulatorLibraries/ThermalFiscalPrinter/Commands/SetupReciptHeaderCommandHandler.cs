@@ -17,7 +17,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
         public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
         {
-            var headerEndIndex = command.Parameters.IndexOf((char)(0xFF));
+            var headerEndIndex = command.Parameters.IndexOf("?");
             if(headerEndIndex == -1)
             {
                 throw new FP_IllegalOperationException("End Sign of Recipt Header was not found in passed command.");

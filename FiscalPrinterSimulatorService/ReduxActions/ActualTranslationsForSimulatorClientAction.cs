@@ -11,22 +11,17 @@ namespace FiscalPrinterSimulatorService.ReduxActions
         public ActualTranslationsForSimulatorClientAction()
         {
             this.type = ReduxActionType.ACTUAL_TRANSLATION_FOR_SIMULATOR_CLIENT.ToString();
+            this.payload.Add("country_translation", Translations);
+        }
 
-            var mergedTranslationsFilePath = Path.Combine(Constants.TranslationsFileDirectoryPath, Constants.MergedTranslationsFileName);
-            IEnumerable<CurrentLanguageTranslations> translations = new List<CurrentLanguageTranslations>();
-            if (File.Exists(mergedTranslationsFilePath))
+        private IEnumerable<CurrentLanguageTranslations> Translations
+        {
+            get
             {
-
-                var translationFiles = Directory.GetFiles(Constants.TranslationsFileDirectoryPath, Constants.CurrentTranslationsFileNamePattern);
-                if (translationFiles.Any())
-                {
-                    translations = translationFiles
-                        .Select(m => File.ReadAllText(m))
-                        .Select(m => JsonConvert.DeserializeObject<CurrentLanguageTranslations>(m))
-                        .ToList();
-                }
-                this.payload.Add("country_translation", translations);
-
+                return Directory.GetFiles(Constants.TranslationsFileDirectoryPath, Constants.CurrentTranslationsFileNamePattern)
+                       .Select(m => File.ReadAllText(m))
+                       .Select(m => JsonConvert.DeserializeObject<CurrentLanguageTranslations>(m))
+                       .ToList();
             }
         }
     }
