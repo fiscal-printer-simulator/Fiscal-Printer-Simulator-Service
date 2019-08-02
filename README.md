@@ -31,9 +31,9 @@ Steps:
 
 ### Implemented Plugins for Fiscal Printer Protocols:
 - #### Polish __[PL]__
-  - [x] - Thermal  
-  - [ ] - Posnet  
-  - [ ] - XML (New!)  
+  - [x] - Thermal [[Documentation]](http://www.soft-bit.pl/downloads/all/Posnet/pliki/THS-I-DEV-26-003_Specyfikacja_protokolu_w_drukarkach_Thermal-A_EJ.pdf)  
+  - [ ] - Posnet  [[Documentation]](http://www.soft-bit.pl/downloads/all/Posnet/pliki/DBC-I-DEV-45-021_specyfikacja_protokolu_Posnet_w_drukarkach.pdf)  
+  - [ ] - New XML Protocol  [[Documentation]](https://www.novitus.pl/sites/default/files/dla-programistow/drukarki-fiskalne/opis_protokolu_komunikacyjnego_xml_wersja_polska_12.10.2015.pdf)  
 
 ## Built With
 * [Fleck](https://github.com/statianzo/Fleck) - lightweight library to websocket communication
