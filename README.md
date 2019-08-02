@@ -29,7 +29,11 @@ Steps:
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+### Implemented Plugins for Fiscal Printer Protocols:
+- #### Polish __[PL]__
+  - [x] - Thermal  
+  - [ ] - Posnet'  
+  - [ ] - XML (New!)  
 
 ## Built With
 * [Fleck](https://github.com/statianzo/Fleck) - lightweight library to websocket communication
