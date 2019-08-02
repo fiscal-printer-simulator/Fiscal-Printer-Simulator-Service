@@ -32,7 +32,7 @@ Steps:
 ### Implemented Plugins for Fiscal Printer Protocols:
 - #### Polish __[PL]__
   - [x] - Thermal  
-  - [ ] - Posnet'  
+  - [ ] - Posnet  
   - [ ] - XML (New!)  
 
 ## Built With
