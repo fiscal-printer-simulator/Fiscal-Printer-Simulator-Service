@@ -19,12 +19,13 @@ namespace FiscalPrinterSimulatorService
 
         public FiscalPrinterSimulatorService()
         {
-            var websocketPort = Environment.GetEnvironmentVariable("FP_SERVICE_PORT");
+            var websocketPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FP_SERVICE_PORT")) ?
+                Environment.GetEnvironmentVariable("FP_SERVICE_PORT")
+                : "8181";
             _serialPort = new SerialPort();
             _printer = new ThermalFiscalPrinter();
             _connections = new List<IWebSocketConnection>();
-
-            _server = new WebSocketServer($"ws://0.0.0.0:{string.IsNullOrWhiteSpace(websocketPort) ? "8181" : websocketPort}");
+            _server = new WebSocketServer($"ws://0.0.0.0:{websocketPort}");
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_DataReceived);
             this.ServiceName = "Fiscal Printer Simulator";
         }
