@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Extensions;
 using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     //TODO: Handling for "Pc" argument - resolve it globaly.
 
@@ -17,13 +17,14 @@ namespace FiscalPrinterSimulatorLibraries.Commands
     /// </summary>
     public class CancelOrApproveTransactionCommandHandler : BaseCommandHandler
     {
-        public CancelOrApproveTransactionCommandHandler(FiscalPrinterCommand command) : base(command)
+        public CancelOrApproveTransactionCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
-            if (!fiscalPrinterState.IsInTransactionState)
+            var state = fiscalPrinterState as FiscalPrinterState;
+            if (!state.IsInTransactionState)
             {
                 throw new FP_IllegalOperationException("Fiscal Printer is not in transaction state.");
             }
@@ -34,7 +35,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             }
             else if (command.PnArguments.ElementAt(0) == "0")
             {
-                return CancelTransactionHandle(fiscalPrinterState);
+                return CancelTransactionHandle(state);
             }
 
             int optionalTotalDiscountPercentage = 0;
@@ -43,7 +44,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             double passedPaidValue = 0;
             double discountValueForTransaction = 0;
             TotalDiscountType discountType = TotalDiscountType.NO_DISCOUNT;
-            double totalAmmountWithoutDiscounts = fiscalPrinterState.SlipLines.Sum(m => m.TotalWithDiscount);
+            double totalAmmountWithoutDiscounts = state.SlipLines.Sum(m => m.TotalWithDiscount);
 
             if (command.PnArguments.Count() < 2 || command.PnArguments.Count() == 3 || command.PnArguments.Count() == 5 || command.PnArguments.Count() > 6)
             {
@@ -85,11 +86,11 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 {
                     throw new FP_BadFormatOfArgumentException("Parameter \"code\" is in wrong formatting. It must have 3 characters.");
                 }
-                else if (string.IsNullOrWhiteSpace(fiscalPrinterState.CashierLogin) || string.IsNullOrWhiteSpace(fiscalPrinterState.PrinterCode))
+                else if (string.IsNullOrWhiteSpace(state.CashierLogin) || string.IsNullOrWhiteSpace(state.PrinterCode))
                 {
                     var passedParameterCode = parametersMatch.Groups[1].Value;
-                    fiscalPrinterState.PrinterCode = passedParameterCode.Substring(0, 1);
-                    fiscalPrinterState.CashierLogin = passedParameterCode.Substring(1);
+                    state.PrinterCode = passedParameterCode.Substring(0, 1);
+                    state.CashierLogin = passedParameterCode.Substring(1);
                 }
 
                 var additionalLines = !parametersMatch.Groups[2].Success ?
@@ -161,11 +162,11 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                 var discountPercentage = ConvertDiscountToPercentage(discountType, discountValueForTransaction, totalAmmountWithoutDiscounts, optionalTotalDiscountPercentage);
 
-                var ptuActualValues = fiscalPrinterState.PTURates
+                var ptuActualValues = state.PTURates
                     .Where(m => m.ActualPercentageValue < 100)
                     .ToDictionary(m => m.Type, m => m.ActualPercentageValue);
 
-                var PTUsOverview = fiscalPrinterState.SlipLines
+                var PTUsOverview = state.SlipLines
                     .GroupBy(m => m.PTU)
                     .Select(m => new
                     {
@@ -211,8 +212,8 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 }
 
                 var printId = new Random().Next(0, 9999).ToString("0000");
-                var footerLeftLine = $"{printId} #Kasa: {fiscalPrinterState.PrinterCode}  Kasjer: {fiscalPrinterState.CashierLogin}";
-                var transactionTime = DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
+                var footerLeftLine = $"{printId} #Kasa: {state.PrinterCode}  Kasjer: {state.CashierLogin}";
+                var transactionTime = DateTime.Now.AddMinutes(state.TimeDiffrenceInMinutes).ToString("HH:mm");
                 approveTransactionBuilder.AppendLine(footerLeftLine.PadRight(Constants.ReciptWidth - transactionTime.Length) + transactionTime);
 
                 var fiscalIdAndLogo = "{PL} ABC " + new Random().Next(10000000, 99999999);
@@ -224,7 +225,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                     approveTransactionBuilder.AppendLine(additionalLine.PadCenter(Constants.ReciptWidth));
                 }
 
-                fiscalPrinterState.IsInTransactionState = false;
+                state.IsInTransactionState = false;
 
                 return new CommandHandlerResponse(approveTransactionBuilder.ToString());
 
