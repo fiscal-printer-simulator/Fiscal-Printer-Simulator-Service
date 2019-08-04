@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>ThermalFiscalPrinterSimulatorLibraries</AssemblyName>
     <RootNamespace>ThermalFiscalPrinterSimulatorLibraries</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>Library</OutputType>
     <OutputPath>bin\$(Platform)</OutputPath>
     <Platforms>x64;x86</Platforms>
