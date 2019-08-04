@@ -23,6 +23,15 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
         public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
             var state = fiscalPrinterState as FiscalPrinterState;
+            if(state.TimeDiffrenceInMinutes == int.MinValue)
+            {
+                throw new FP_IllegalOperationException("RTC clock is not set up. Please do this before any actions.");
+            }
+            if (!state.IsInTransactionState)
+            {
+                throw new FP_IllegalOperationException("Fiscal Printer is not in transaction state.");
+            }
+
             var slipLine = new SlipLine();
 
 
@@ -57,7 +66,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
             if (command.PnArguments.Count() >= 3)
             {
-                if (!Enum.TryParse<DiscountDescription>(command.PnArguments.ElementAt(1), out discountDescription))
+                if (!Enum.TryParse<DiscountDescription>(command.PnArguments.ElementAt(2), out discountDescription))
                 {
                     throw new FP_BadFormatOfArgumentException("Unknkown Po command argument");
                 }
@@ -185,8 +194,12 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
             if (!state.SlipLines.Any())
             {
-                var fiscalPrinterDate = new DateTime().AddMinutes(state.TimeDiffrenceInMinutes).ToString("YYYY-MM-DD");
+                state.TransactionCounter += 1;
+
+                var fiscalPrinterDate = DateTime.Now.AddMinutes(state.TimeDiffrenceInMinutes).ToString("yyyy-MM-dd");
                 var transactionCounter = state.TransactionCounter.ToString();
+
+                slipBuilder.AppendLine(state.FiscalPrinterHeader);
                 slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
                 slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
                 slipBuilder.AppendLine("".PadLeft(Constants.ReciptWidth, '-'));
@@ -220,7 +233,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 slipBuilder.AppendLine("Opis: " + productDescription);
             }
 
-            if (discountDescription != DiscountDescription.NONE && slipLine.DiscountValue != 0)
+            if (slipLine.DiscountValue != 0)
             {
 
                 discountDescriptionText = discountDescription == DiscountDescription.CUSTOM
@@ -246,10 +259,8 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                                 Constants.ReciptWidth - discountSlipLineRightPart.Length)
                                 + discountSlipLineRightPart);
 
+                slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
             }
-
-            slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
-
 
             state.SlipLines.Add(slipLine);
             return new CommandHandlerResponse(slipBuilder.ToString());
@@ -297,7 +308,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 default:
                     break;
             }
-            return string.Empty;
+            return "rabat";
         }
 
     }

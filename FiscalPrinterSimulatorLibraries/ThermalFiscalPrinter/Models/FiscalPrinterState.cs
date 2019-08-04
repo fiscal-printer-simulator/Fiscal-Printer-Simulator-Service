@@ -28,6 +28,11 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Models
             };
             FiscalPrinterHeader = CreateDefaulHeader();
         }
+
+        public string CashierLogin { get; set; }
+        public string PrinterCode { get; set; }
+
+
         public DiscountCalculationMethod DiscountCalculationType;
         public List<SlipLine> SlipLines;
         public string FiscalPrinterHeader;

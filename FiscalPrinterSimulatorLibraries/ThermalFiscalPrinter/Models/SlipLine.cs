@@ -10,6 +10,12 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Models
         public double TotalPrice { get; set; }
         public double ProductPrice { get; set; }
         public double DiscountValue { get; set; }
-
+        public double TotalWithDiscount
+        {
+            get
+            {
+                return DiscountValue < 1 ? TotalPrice * (1 - DiscountValue) : TotalPrice - DiscountValue;
+            }
+        }
     }
 }

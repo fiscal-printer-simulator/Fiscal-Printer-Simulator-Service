@@ -43,7 +43,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             var reciptHeader = string.Join("", Enumerable.Repeat("A", 501));
 
             var state = new FiscalPrinterState();
-            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader + "<#$FF>");
+            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader + "?");
             var commandHandler = new SetupReciptHeaderCommandHandler(command);
 
             //Act
@@ -73,7 +73,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
                                   + reciptHeaderRows[2];
 
             var state = new FiscalPrinterState();
-            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeaderInput + "<#$FF>");
+            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeaderInput + "?");
             var commandHandler = new SetupReciptHeaderCommandHandler(command);
 
             //Act

@@ -20,8 +20,8 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
         public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
             var state = fiscalPrinterState as FiscalPrinterState;
+            var headerEndIndex = command.Parameters.IndexOf("?");
 
-            var headerEndIndex = command.Parameters.IndexOf("<#$FF>");
             if(headerEndIndex == -1)
             {
                 throw new FP_IllegalOperationException("End Sign of Recipt Header was not found in passed command.");

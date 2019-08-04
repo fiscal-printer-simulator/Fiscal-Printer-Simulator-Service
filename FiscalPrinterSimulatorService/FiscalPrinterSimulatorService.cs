@@ -22,9 +22,12 @@ namespace FiscalPrinterSimulatorService
 
         public FiscalPrinterSimulatorService()
         {
+            var websocketPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FP_SERVICE_PORT")) ?
+                Environment.GetEnvironmentVariable("FP_SERVICE_PORT")
+                : "8181";
             _serialPort = new SerialPort();
             _connections = new List<IWebSocketConnection>();
-            _server = new WebSocketServer("ws://127.0.0.1:8181");
+            _server = new WebSocketServer($"ws://0.0.0.0:{websocketPort}");
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_DataReceived);
             this.ServiceName = "Fiscal Printer Simulator";
             LoadFiscalPrinterHandlingPlugins();

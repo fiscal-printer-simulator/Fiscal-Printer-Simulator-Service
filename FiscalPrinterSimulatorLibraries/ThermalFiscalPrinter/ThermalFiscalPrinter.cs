@@ -38,13 +38,13 @@ namespace ThermalFiscalPrinterSimulatorLibraries
 
         private IEnumerable<BaseFiscalPrinterCommand> SplitByCommands(string inputCommandChars)
         {
-            string splittingPattern = @"\x1bP((.*)([\^\@\#\$][a-zA-Z])((.+[\x0d/\xFF])+(?=[\w\d]{2}))*)([\w\d]{2})*\x1b|(\x10)|(\x18)|(\x07)|(\x05)";
+            string splittingPattern = @"\x1bP((.*)([\^\@\#\$][a-zA-Z])(([^\x1b\\]+[\x0d\n/\?])+(?=[\w\d]{2}))*)([\w\d]{2})*\x1b\\|(\x10)|(\x18)|(\x07)|(\x05)";
             Regex regex = new Regex(splittingPattern);
             MatchCollection matches = regex.Matches(inputCommandChars);
 
             for (int i = 0; i < matches.Count; i++)
             {
-                var matchesGroups = matches[0].Groups;
+                var matchesGroups = matches[i].Groups;
 
                 var checksumBaseToCalc = matchesGroups[1].Value;
                 var pnArguments = matchesGroups[2].Value.Split(';');
