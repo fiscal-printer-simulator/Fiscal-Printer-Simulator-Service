@@ -37,13 +37,13 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 return CancelTransactionHandle(fiscalPrinterState);
             }
 
-            int percentOfTotalDiscount = 0;
+            int optionalTotalDiscountPercentage = 0;
             int ammountOfAdditionalLines = 0;
             double passedTotalAmmount = 0;
             double passedPaidValue = 0;
-            double passedDiscountValue = 0;
-            DiscountType discountType = DiscountType.NO_DISCOUNT;
-
+            double discountValueForTransaction = 0;
+            TotalDiscountType discountType = TotalDiscountType.NO_DISCOUNT;
+            double totalAmmountWithoutDiscounts = fiscalPrinterState.SlipLines.Sum(m => m.TotalWithDiscount);
 
             if (command.PnArguments.Count() < 2 || command.PnArguments.Count() == 3 || command.PnArguments.Count() == 5 || command.PnArguments.Count() > 6)
             {
@@ -52,7 +52,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             }
             else
             {
-                if (!int.TryParse(command.PnArguments.ElementAt(1), out percentOfTotalDiscount))
+                if (!int.TryParse(command.PnArguments.ElementAt(1), out optionalTotalDiscountPercentage))
                 {
                     throw new FP_BadFormatOfArgumentException("Percent of total discount must be a number between 0 and 99");
                 }
@@ -68,7 +68,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                     if (command.PnArguments.Count() == 6)
                     {
-                        if (!Enum.TryParse<DiscountType>(command.PnArguments.ElementAt(4), out discountType))
+                        if (!Enum.TryParse<TotalDiscountType>(command.PnArguments.ElementAt(4), out discountType))
                         {
                             throw new FP_BadFormatOfArgumentException("Invaild type of discount declared.");
                         }
@@ -96,7 +96,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                                         new string[0]
                                         : parametersMatch.Groups[2].Value
                                         .Split((char)Constants.ASCICodeCR)
-                                        .Where(m=> !string.IsNullOrWhiteSpace(m))
+                                        .Where(m => !string.IsNullOrWhiteSpace(m))
                                         .ToArray();
                 if (ammountOfAdditionalLines != additionalLines.Length)
                 {
@@ -107,20 +107,39 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of PAID value.");
                 }
+                else
+                {
+                    passedTotalAmmount = Math.Round(passedPaidValue, 2);
+                }
 
                 if (!double.TryParse(parametersMatch.Groups[7].Value, out passedTotalAmmount))
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of TOTAL value.");
                 }
-                else if (passedTotalAmmount != fiscalPrinterState.SlipLines.Sum(m => m.TotalWithDiscount))
+                else
                 {
-                    throw new FP_IllegalOperationException("Wrong passed TOTAL value. It not equals with passed fiscal printer line.");
-                    // TODO: Discount Handling
+                    passedTotalAmmount = Math.Round(passedTotalAmmount, 2);
                 }
 
+
+                if ((discountType != TotalDiscountType.NO_DISCOUNT && discountValueForTransaction != 0) || optionalTotalDiscountPercentage != 0)
+                {
+                    var totalPriceWithDiscount = CalculateTOTALSumWithDiscount(discountType,
+                                                                                discountValueForTransaction,
+                                                                                totalAmmountWithoutDiscounts,
+                                                                                optionalTotalDiscountPercentage);
+
+                    if (Math.Round(totalPriceWithDiscount, 2) != passedTotalAmmount)
+                    {
+                        throw new FP_IllegalOperationException("Wrong passed TOTAL value. It not equals with passed fiscal printer line and total discount.");
+                    }
+                }
+
+
+
                 if (command.PnArguments.Count() == 6
-                    && discountType != DiscountType.NO_DISCOUNT
-                    && !double.TryParse(parametersMatch.Groups[9].Value, out passedDiscountValue))
+                    && discountType != TotalDiscountType.NO_DISCOUNT
+                    && !double.TryParse(parametersMatch.Groups[9].Value, out discountValueForTransaction))
                 {
                     throw new FP_BadFormatOfArgumentException("Bad formatting of DISCOUNT value.");
                 }
@@ -128,10 +147,19 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                 StringBuilder approveTransactionBuilder = new StringBuilder();
                 approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
-                if (discountType != DiscountType.NO_DISCOUNT)
+                if (discountType != TotalDiscountType.NO_DISCOUNT)
                 {
-                    //TODO: discount handling
+                    var subTotalLineRight = $"{totalAmmountWithoutDiscounts.ToString("0.00")} ";
+                    var totalDiscountValueInPLN = Math.Round(totalAmmountWithoutDiscounts - passedTotalAmmount, 2);
+                    var discountDescriptionText = totalDiscountValueInPLN < 0 ? "narzut" : "rabat";
+
+                    var discountValue = Math.Abs(totalDiscountValueInPLN).ToString("0.00") + " ";
+
+                    approveTransactionBuilder.AppendLine("Podsuma".PadRight(Constants.ReciptWidth - subTotalLineRight.Length) + subTotalLineRight);
+                    approveTransactionBuilder.AppendLine($"    {discountDescriptionText}".PadRight(Constants.ReciptWidth - discountValue.Length) + discountValue);
                 }
+
+                var discountPercentage = ConvertDiscountToPercentage(discountType, discountValueForTransaction, totalAmmountWithoutDiscounts, optionalTotalDiscountPercentage);
 
                 var ptuActualValues = fiscalPrinterState.PTURates
                     .Where(m => m.ActualPercentageValue < 100)
@@ -142,20 +170,20 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                     .Select(m => new
                     {
                         type = m.Key,
-                        sum = m.Sum(slip => slip.TotalWithDiscount),
+                        sum = m.Sum(slip => slip.TotalWithDiscount) * discountPercentage,
                         ptuPercentage = ptuActualValues[m.Key],
-                        ptuVal = 
-                        (m.Sum(slip => slip.TotalWithDiscount) * (ptuActualValues[m.Key] / 100))
+                        ptuVal =
+                        ((m.Sum(slip => slip.TotalWithDiscount) * discountPercentage) * (ptuActualValues[m.Key] / 100))
                         /
                         (1 + (ptuActualValues[m.Key] / 100))
                     });
 
                 foreach (var ptuOVerview in PTUsOverview)
                 {
-                    var totalInPTU = ptuOVerview.sum.ToString("0.00");
+                    var totalInPTU = ptuOVerview.sum.ToString("0.00") + " ";
                     var totalInPTULeftLine = $"Sprzed. opodatk. {ptuOVerview.type.ToString()}"
                         .PadRight(Constants.ReciptWidth - totalInPTU.Length);
-                    var totalPTUVal = ptuOVerview.ptuVal.ToString("0.00");
+                    var totalPTUVal = ptuOVerview.ptuVal.ToString("0.00")+ " ";
                     var totalPTUValLeftLine = $"Kwota PTU {ptuOVerview.type.ToString()} {ptuOVerview.ptuPercentage} %"
                         .PadRight(Constants.ReciptWidth - totalPTUVal.Length);
 
@@ -163,10 +191,11 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                     approveTransactionBuilder.AppendLine(totalInPTULeftLine + totalInPTU);
                     approveTransactionBuilder.AppendLine(totalPTUValLeftLine + totalPTUVal);
                 }
-                var totalPTUsValue = PTUsOverview.Sum(m => m.ptuVal).ToString("0.00");
+                var totalPTUsValue = PTUsOverview.Sum(m => m.ptuVal).ToString("0.00") + " ";
                 approveTransactionBuilder.AppendLine("ŁĄCZNA KWOTA PTU".PadRight(Constants.ReciptWidth - totalPTUsValue.Length) + totalPTUsValue);
 
-                var totalSum = passedTotalAmmount.ToString("0.00");
+                var totalSumArray = passedTotalAmmount.ToString("0.00").ToArray();
+                var totalSum = string.Join(" ", totalSumArray) + " ";
                 approveTransactionBuilder.AppendLine("S U M A".PadRight(Constants.ReciptWidth - totalSum.Length) + totalSum);
 
                 approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
@@ -181,12 +210,12 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                     approveTransactionBuilder.AppendLine("Reszta".PadRight(Constants.ReciptWidth - changeValue.Length) + changeValue);
                 }
 
-                var printId = new Random().Next(0,9999).ToString("0000");
+                var printId = new Random().Next(0, 9999).ToString("0000");
                 var footerLeftLine = $"{printId} #Kasa: {fiscalPrinterState.PrinterCode}  Kasjer: {fiscalPrinterState.CashierLogin}";
                 var transactionTime = DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
                 approveTransactionBuilder.AppendLine(footerLeftLine.PadRight(Constants.ReciptWidth - transactionTime.Length) + transactionTime);
 
-                var fiscalIdAndLogo = "{PL} ABC "+new Random().Next(10000,99999);
+                var fiscalIdAndLogo = "{PL} ABC " + new Random().Next(10000000, 99999999);
                 approveTransactionBuilder.AppendLine(fiscalIdAndLogo.PadCenter(Constants.ReciptWidth));
                 approveTransactionBuilder.AppendLine();
 
@@ -218,7 +247,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             var printerNo = "";
             var cashierLogin = "";
-            var actualTime = new DateTime().AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
+            var actualTime =DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("HH:mm");
             var specialNumberRow = "";
             if (commandParameters.Length == 1)
             {
@@ -239,6 +268,39 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             }
 
             return new CommandHandlerResponse(cancelReceiptBuilder.ToString());
+        }
+
+        private double CalculateTOTALSumWithDiscount(TotalDiscountType DiscountType,
+                                                     double DiscountValue,
+                                                     double TotalPrice,
+                                                     int OptionalPercentageDiscountValue)
+        {
+            switch (DiscountType)
+            {
+                case TotalDiscountType.NO_DISCOUNT:
+                    break;
+                case TotalDiscountType.VALUE_DISCOUNT:
+                    return TotalPrice - DiscountValue;
+                case TotalDiscountType.PERCENTAGE_DISCOUNT:
+                    return TotalPrice * (DiscountValue / 100);
+                case TotalDiscountType.VALUE_COAT:
+                    return TotalPrice + DiscountValue;
+                case TotalDiscountType.PERCENTAGE_COAT:
+                    return TotalPrice * (1 + (DiscountValue / 100));
+                default:
+                    break;
+            }
+            return OptionalPercentageDiscountValue == 0 ? TotalPrice : TotalPrice * (100 / OptionalPercentageDiscountValue);
+        }
+
+        private double ConvertDiscountToPercentage(TotalDiscountType DiscountType,
+                                                     double DiscountValue,
+                                                     double TotalPrice,
+                                                     int OptionalPercentageDiscountValue)
+        {
+            var discountPercentageValue = CalculateTOTALSumWithDiscount(DiscountType, DiscountValue, TotalPrice, OptionalPercentageDiscountValue) / TotalPrice;
+
+            return Math.Round(discountPercentageValue, 2);
         }
     }
 }

@@ -19,6 +19,10 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
         public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
         {
+            if(fiscalPrinterState.TimeDiffrenceInMinutes == int.MinValue)
+            {
+                throw new FP_IllegalOperationException("RTC clock is not set up. Please do this before any actions.");
+            }
             if (!fiscalPrinterState.IsInTransactionState)
             {
                 throw new FP_IllegalOperationException("Fiscal Printer is not in transaction state.");
@@ -58,7 +62,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             if (command.PnArguments.Count() >= 3)
             {
-                if (!Enum.TryParse<DiscountDescription>(command.PnArguments.ElementAt(1), out discountDescription))
+                if (!Enum.TryParse<DiscountDescription>(command.PnArguments.ElementAt(2), out discountDescription))
                 {
                     throw new FP_BadFormatOfArgumentException("Unknkown Po command argument");
                 }
@@ -190,6 +194,8 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
                 var fiscalPrinterDate = DateTime.Now.AddMinutes(fiscalPrinterState.TimeDiffrenceInMinutes).ToString("yyyy-MM-dd");
                 var transactionCounter = fiscalPrinterState.TransactionCounter.ToString();
+
+                slipBuilder.AppendLine(fiscalPrinterState.FiscalPrinterHeader);
                 slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
                 slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
                 slipBuilder.AppendLine("".PadLeft(Constants.ReciptWidth, '-'));
