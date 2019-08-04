@@ -4,13 +4,13 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 {
     public abstract class BaseCommandHandler 
     {
-        protected FiscalPrinterCommand command;
+        protected BaseFiscalPrinterCommand command;
 
-        public BaseCommandHandler(FiscalPrinterCommand command)
+        public BaseCommandHandler(BaseFiscalPrinterCommand command)
         {
             this.command = command;
         }
 
-        public abstract CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState);
+        public abstract CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState);
     }
 }

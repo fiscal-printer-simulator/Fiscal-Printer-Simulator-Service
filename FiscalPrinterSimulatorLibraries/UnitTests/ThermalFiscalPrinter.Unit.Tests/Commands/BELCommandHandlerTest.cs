@@ -1,7 +1,7 @@
-﻿using FiscalPrinterSimulatorLibraries.Commands;
-using FiscalPrinterSimulatorLibraries.Models;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -13,7 +13,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
         {
             //Arrange
             var fiscalPrinterState = new FiscalPrinterState();
-            var command = new FiscalPrinterCommand(null, "BEL", null, string.Empty, string.Empty);
+            var command = new ThermalFiscalPrinterCommand(null, "BEL", null, string.Empty, string.Empty);
             var _bELCommandHandler = new BELCommandHandler(command);
             //Act
             var result = _bELCommandHandler.Handle(fiscalPrinterState);
@@ -27,7 +27,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
         {
             //Arrange 
             FiscalPrinterState fiscalPrinterState = null;
-            var command = new FiscalPrinterCommand(null, "BEL", null, string.Empty, string.Empty);
+            var command = new ThermalFiscalPrinterCommand(null, "BEL", null, string.Empty, string.Empty);
             var _bELCommandHandler = new BELCommandHandler(command);
 
             //Act

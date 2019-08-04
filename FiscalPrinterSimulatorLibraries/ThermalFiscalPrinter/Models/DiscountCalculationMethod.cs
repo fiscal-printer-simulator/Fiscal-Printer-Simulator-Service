@@ -1,4 +1,4 @@
-﻿namespace FiscalPrinterSimulatorLibraries.Models
+﻿namespace ThermalFiscalPrinterSimulatorLibraries.Models
 {
     public enum DiscountCalculationMethod
     {

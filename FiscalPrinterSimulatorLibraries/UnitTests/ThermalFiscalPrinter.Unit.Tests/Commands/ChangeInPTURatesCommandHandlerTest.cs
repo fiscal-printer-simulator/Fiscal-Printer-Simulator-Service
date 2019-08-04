@@ -1,12 +1,13 @@
-﻿using FiscalPrinterSimulatorLibraries;
-using FiscalPrinterSimulatorLibraries.Commands;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Extensions;
-using FiscalPrinterSimulatorLibraries.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Text;
-using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
+using ThermalFiscalPrinterSimulatorLibraries;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
+using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -18,7 +19,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
         public void When_Arguments_Not_Passed_Should_Throw_FP_WrongNumberOfArgumentsException()
         {
             //Arrange
-            FiscalPrinterCommand command = new FiscalPrinterCommand(null, null, null, null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(null, null, null, null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             //Assert
@@ -36,7 +37,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             FiscalPrinterState state = new FiscalPrinterState();
             var PnArgs = new List<string>() { "d3" };
-            FiscalPrinterCommand command = new FiscalPrinterCommand(PnArgs, null, null, null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(PnArgs, null, null, null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             //Assert
@@ -53,7 +54,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             FiscalPrinterState state = new FiscalPrinterState();
             var PnArgs = new List<string>() { "8" };
-            FiscalPrinterCommand command = new FiscalPrinterCommand(PnArgs, null, null, null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(PnArgs, null, null, null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             //Assert
@@ -73,7 +74,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             FiscalPrinterState state = new FiscalPrinterState();
             System.Console.WriteLine(state.PTURates[(int)PTU.A]);
             var PnArgs = new List<string>() { "3" };
-            FiscalPrinterCommand command = new FiscalPrinterCommand(PnArgs, null, "3/4", null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(PnArgs, null, "3/4", null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             //Assert
@@ -91,7 +92,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             FiscalPrinterState state = new FiscalPrinterState();
             var PnArgs = new List<string>() { "4" };
-            FiscalPrinterCommand command = new FiscalPrinterCommand(PnArgs, null, "23/7/3/100", null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(PnArgs, null, "23/7/3/100", null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             _ = handler.Handle(state);
@@ -113,7 +114,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             FiscalPrinterState state = new FiscalPrinterState();
             var PnArgs = new List<string>() { "5" };
-            FiscalPrinterCommand command = new FiscalPrinterCommand(PnArgs, null, "23/7/6/4,5/2", null, null);
+            ThermalFiscalPrinterCommand command = new ThermalFiscalPrinterCommand(PnArgs, null, "23/7/6/4,5/2", null, null);
             ChangePTURatesCommandHandler handler = new ChangePTURatesCommandHandler(command);
             //Act
             var result = handler.Handle(state);

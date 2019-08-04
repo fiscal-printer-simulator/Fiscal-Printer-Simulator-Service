@@ -1,8 +1,8 @@
-﻿using FiscalPrinterSimulatorLibraries.Commands;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -14,7 +14,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
         public void When_Pass_Any_Parameters_Should_Throw_TaskCanceledException()
         {
             //Assert
-            var command = new FiscalPrinterCommand(null, null, null, string.Empty, string.Empty);
+            var command = new ThermalFiscalPrinterCommand(null, null, null, string.Empty, string.Empty);
             CANCommandHandler canCommandHandler = new CANCommandHandler(command);
 
             //Act

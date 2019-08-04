@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ThermalFiscalPrinterSimulatorLibraries;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -47,7 +50,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
                 dateTime.Second.ToString()
             };
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             //Act
@@ -74,7 +77,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             var dateArguments = Enumerable.Range(1, numberOfParameters).Select(m => m.ToString());
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             //Act
@@ -92,7 +95,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             //Arrange
             var dateArguments = Enumerable.Range(1, 5).Select(m => m.ToString()).Append("6y");
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             //Act
@@ -125,7 +128,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 
             _state.IsInFiscalState = true;
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             //Act
@@ -156,7 +159,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 
             _state.IsInFiscalState = true;
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             //Act
@@ -189,7 +192,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 
             _state.IsInFiscalState = true;
 
-            var command = new FiscalPrinterCommand(dateArguments, "$c", null, null, null);
+            var command = new ThermalFiscalPrinterCommand(dateArguments, "$c", null, null, null);
             var handler = new SetupClockCommandHandler(command);
 
             StringBuilder reciptBody = new StringBuilder();

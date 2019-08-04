@@ -1,24 +1,29 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using FiscalPrinterSimulatorLibraries;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Extensions;
 using FiscalPrinterSimulatorLibraries.Models;
-using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
+using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBSETPTU
     /// </summary>
     public class ChangePTURatesCommandHandler : BaseCommandHandler
     {
-        public ChangePTURatesCommandHandler(FiscalPrinterCommand command) : base(command)
+        public ChangePTURatesCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
             if (command.PnArguments is null || !command.PnArguments.Any())
             {
                 throw new FP_WrongNumberOfArgumentsException("Arguments missing");
@@ -29,7 +34,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 throw new FP_BadFormatOfArgumentException("First argument is not in numeric format");
             }
 
-            if (numberOfRates > fiscalPrinterState.PTURates.Count)
+            if (numberOfRates > state.PTURates.Count)
             {
                 throw new FP_IllegalOperationException("Maximum of PTU Rates is 7.");
             }
@@ -48,25 +53,25 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
             sb.AppendLine("Z m i a n a  s t a w e k  P T U".PadCenter(Constants.ReciptWidth));
             sb.AppendLine("Stare PTU:".PadRight(Constants.ReciptWidth));
-            fiscalPrinterState.PTURates.ForEach(key =>
+            state.PTURates.ForEach(key =>
             {
-                sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, fiscalPrinterState));
+                sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, state));
             });
             sb.AppendLine("-".PadRight(Constants.ReciptWidth, '-'));
 
-            ChangePTURatesByCommand(fiscalPrinterState, ptuParameters);
+            ChangePTURatesByCommand(state, ptuParameters);
 
             sb.AppendLine("Nowe PTU:".PadRight(Constants.ReciptWidth));
-            fiscalPrinterState.PTURates.ForEach(key =>
+            state.PTURates.ForEach(key =>
             {
-                sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, fiscalPrinterState));
+                sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, state));
             });
             sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
 
             var lastErrorCode = "0";
-            var fiscalState = fiscalPrinterState.IsInFiscalState ? "1" : "0";
-            var transactionState = fiscalPrinterState.IsInTransactionState ? "1" : "0";
-            var lastTransactionState = fiscalPrinterState.LastTransactionSuccess ? "1" : "0";
+            var fiscalState = state.IsInFiscalState ? "1" : "0";
+            var transactionState = state.IsInTransactionState ? "1" : "0";
+            var lastTransactionState = state.LastTransactionSuccess ? "1" : "0";
 
             var outputCommandArguments = new string[]
             {
@@ -83,10 +88,10 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
             var outputCommandParametersString =
                 string.Join(";", outputCommandArguments) + "/" +
-                string.Join("/", fiscalPrinterState.PTURates.Select(m => m.ActualPercentageValue)) + (fiscalPrinterState.NextFiscalPrinterReciptId - 1) + "/" +
-                string.Join("/", fiscalPrinterState.PTURates.Select(m => m.TotalValueOfSalesInType)) + "/" + fiscalPrinterState.ActualDrawerAmmount + "ABC12345678";
+                string.Join("/", state.PTURates.Select(m => m.ActualPercentageValue)) + (state.NextFiscalPrinterReciptId - 1) + "/" +
+                string.Join("/", state.PTURates.Select(m => m.TotalValueOfSalesInType)) + "/" + state.ActualDrawerAmmount + "ABC12345678";
 
-            var outputCommand = new FiscalPrinterCommand(outputCommandArguments, "#X", outputCommandParametersString);
+            var outputCommand = new ThermalFiscalPrinterCommand(outputCommandArguments, "#X", outputCommandParametersString);
 
 
             return new CommandHandlerResponse(outputCommand, sb.ToString());
@@ -96,7 +101,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
         {
             var ptuValue = state.PTURates.First(m => m.Type == PTUType).ActualPercentageValue;
 
-            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00") + " %";
+            var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.CreateSpecificCulture("pl-PL")) + " %";
             var numberOfSpace = Constants.ReciptWidth - ptuRateString.Length;
             return $"PTU {PTUType.ToString()}".PadRight(numberOfSpace) + ptuRateString;
         }
@@ -105,52 +110,55 @@ namespace FiscalPrinterSimulatorLibraries.Commands
 
         private static void ChangePTURatesByCommand(FiscalPrinterState fiscalPrinterState, string[] ptuParameters)
         {
+
+            var polishCulture = CultureInfo.CreateSpecificCulture("pl-PL");
+
             if (ptuParameters.Length > 0)
             {
                 fiscalPrinterState.PTURates[(int)PTU.A].ActualPercentageValue =
-                    double.TryParse(ptuParameters[0], out double rateValue) ?
+                    double.TryParse(ptuParameters[0],NumberStyles.Number, polishCulture, out double rateValue) ?
                     rateValue :
                     Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 1)
             {
                 fiscalPrinterState.PTURates[(int)PTU.B].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[1], out double rateValue) ?
+                                   double.TryParse(ptuParameters[1], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 2)
             {
                 fiscalPrinterState.PTURates[(int)PTU.C].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[2], out double rateValue) ?
+                                   double.TryParse(ptuParameters[2], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 3)
             {
                 fiscalPrinterState.PTURates[(int)PTU.D].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[3], out double rateValue) ?
+                                   double.TryParse(ptuParameters[3], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 4)
             {
                 fiscalPrinterState.PTURates[(int)PTU.E].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[4], out double rateValue) ?
+                                   double.TryParse(ptuParameters[4], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 5)
             {
                 fiscalPrinterState.PTURates[(int)PTU.F].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[5], out double rateValue) ?
+                                   double.TryParse(ptuParameters[5], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }
             if (ptuParameters.Length > 6)
             {
                 fiscalPrinterState.PTURates[(int)PTU.G].ActualPercentageValue =
-                                   double.TryParse(ptuParameters[6], out double rateValue) ?
+                                   double.TryParse(ptuParameters[6], NumberStyles.Number, polishCulture, out double rateValue) ?
                                    rateValue :
                                    Constants.PTUInactiveRate;
             }

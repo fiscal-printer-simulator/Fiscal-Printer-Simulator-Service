@@ -1,22 +1,26 @@
 ﻿using System;
 using System.Linq;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBSETRAB
     /// </summary>
     public class SetupDiscountCalculationMethodCommandHandler : BaseCommandHandler
     {
-        public SetupDiscountCalculationMethodCommandHandler(FiscalPrinterCommand command) : base(command)
+        public SetupDiscountCalculationMethodCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
-            if (fiscalPrinterState.TimeDiffrenceInMinutes == int.MinValue)
+            var state = fiscalPrinterState as FiscalPrinterState;
+
+            if (state.TimeDiffrenceInMinutes == int.MinValue)
             {
                 throw new FP_IllegalOperationException("Timer RTC not initialized.");
             }
@@ -26,7 +30,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
             }
             else if (Enum.TryParse(command.PnArguments.First(), out DiscountCalculationMethod discountType))
             {
-                fiscalPrinterState.DiscountCalculationType = discountType;
+                state.DiscountCalculationType = discountType;
                 return new CommandHandlerResponse();
             }
             else

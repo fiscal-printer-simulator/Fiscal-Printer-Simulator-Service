@@ -1,13 +1,13 @@
-﻿using FiscalPrinterSimulatorLibraries;
-using FiscalPrinterSimulatorLibraries.Commands;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
-using FiscalPrinterSimulatorLibraries.Models;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using ThermalFiscalPrinterSimulatorLibraries;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
 {
@@ -22,7 +22,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             var reciptHeader = string.Join("", Enumerable.Repeat("A", 500));
 
             var state = new FiscalPrinterState();
-            var command = new FiscalPrinterCommand(null, null, reciptHeader);
+            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader);
             var commandHandler = new SetupReciptHeaderCommandHandler(command);
 
             //Act
@@ -43,7 +43,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
             var reciptHeader = string.Join("", Enumerable.Repeat("A", 501));
 
             var state = new FiscalPrinterState();
-            var command = new FiscalPrinterCommand(null, null, reciptHeader + "?");
+            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader + "?");
             var commandHandler = new SetupReciptHeaderCommandHandler(command);
 
             //Act
@@ -73,7 +73,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
                                   + reciptHeaderRows[2];
 
             var state = new FiscalPrinterState();
-            var command = new FiscalPrinterCommand(null, null, reciptHeaderInput + "?");
+            var command = new ThermalFiscalPrinterCommand(null, null, reciptHeaderInput + "?");
             var commandHandler = new SetupReciptHeaderCommandHandler(command);
 
             //Act

@@ -1,21 +1,25 @@
-﻿using FiscalPrinterSimulatorLibraries.Exceptions;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
+using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
 using System;
 using System.Linq;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBSERM
     /// </summary>
     public class SetupErrorHandlingCommandHandler : BaseCommandHandler
     {
-        public SetupErrorHandlingCommandHandler(FiscalPrinterCommand command) : base(command)
+        public SetupErrorHandlingCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
+
             if (command.PnArguments.Count() != 1)
             {
                 throw new FP_WrongNumberOfArgumentsException("Required one Pn Argument that describes type of error handling");
@@ -26,7 +30,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 throw new FP_IllegalOperationException("Error handling type argument must be numeric and be between 0 and 3");
             }
 
-            fiscalPrinterState.ErrorHandlingType = errorHandlingType;
+            state.ErrorHandlingType = errorHandlingType;
 
             return new CommandHandlerResponse();
         }

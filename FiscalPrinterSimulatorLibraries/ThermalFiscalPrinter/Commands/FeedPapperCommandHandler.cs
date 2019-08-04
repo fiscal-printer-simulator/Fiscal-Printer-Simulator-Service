@@ -1,25 +1,28 @@
 ﻿using System.Linq;
 using System.Text;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBFEED
     /// </summary>
     public class FeedPapperCommandHandler : BaseCommandHandler
     {
-        public FeedPapperCommandHandler(FiscalPrinterCommand command) : base(command)
+        public FeedPapperCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
             int minFeedPapperCount = 0;
             int maxFeedPapperCount = 20;
 
-            if (fiscalPrinterState.IsInTransactionState)
+            if (state.IsInTransactionState)
             {
                 throw new FP_IllegalOperationException("Option not avalible in fiscal transaction state.");
             }

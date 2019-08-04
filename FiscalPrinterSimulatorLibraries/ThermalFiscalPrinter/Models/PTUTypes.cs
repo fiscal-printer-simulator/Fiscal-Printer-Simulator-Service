@@ -1,6 +1,6 @@
-﻿using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
+﻿using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace FiscalPrinterSimulatorLibraries.Models
+namespace ThermalFiscalPrinterSimulatorLibraries.Models
 {
     public class PTUTypes
     {

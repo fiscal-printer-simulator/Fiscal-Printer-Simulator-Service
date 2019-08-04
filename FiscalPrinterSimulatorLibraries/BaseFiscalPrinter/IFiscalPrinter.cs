@@ -1,12 +1,11 @@
 ﻿using FiscalPrinterSimulatorLibraries.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FiscalPrinterSimulatorLibraries
 {
     public interface IFiscalPrinter
     {
+        string ProtocolName { get; }
         IEnumerable<CommandHandlerResponse> HandleReceivedData(string command);
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using FiscalPrinterSimulatorLibraries.Extensions;
-using static FiscalPrinterSimulatorLibraries.Models.PTUTypes;
+using FiscalPrinterSimulatorLibraries.Models;
+using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace FiscalPrinterSimulatorLibraries.Models
+namespace ThermalFiscalPrinterSimulatorLibraries.Models
 {
-    public class FiscalPrinterState
+    public class FiscalPrinterState : IFiscalPrinterState
     {
         public FiscalPrinterState()
         {

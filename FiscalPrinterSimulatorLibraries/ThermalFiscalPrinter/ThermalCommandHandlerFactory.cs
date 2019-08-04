@@ -1,11 +1,12 @@
-﻿using FiscalPrinterSimulatorLibraries.Commands;
-using System;
+﻿using System;
+using FiscalPrinterSimulatorLibraries.Commands;
+using ThermalFiscalPrinterSimulatorLibraries.Commands;
 
-namespace FiscalPrinterSimulatorLibraries
+namespace ThermalFiscalPrinterSimulatorLibraries
 {
     public class ThermalCommandHandlerFactory
     {
-        public static BaseCommandHandler Create(FiscalPrinterCommand command)
+        public static BaseCommandHandler Create(BaseFiscalPrinterCommand command)
         {
             switch (command.Name)
             {

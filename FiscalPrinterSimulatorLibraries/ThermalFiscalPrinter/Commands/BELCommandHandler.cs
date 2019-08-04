@@ -1,22 +1,25 @@
-﻿using FiscalPrinterSimulatorLibraries.Models;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
+using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command BEL
     /// </summary>
     public class BELCommandHandler : BaseCommandHandler
     {
-        public BELCommandHandler(FiscalPrinterCommand command) : base(command)
+        public BELCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
             // System.Media.SystemSounds.Beep.Play();
             if (fiscalPrinterState != null)
             {
-                fiscalPrinterState.LastCommandSuccess = true;
+                state.LastCommandSuccess = true;
             }
             return new CommandHandlerResponse();
         }

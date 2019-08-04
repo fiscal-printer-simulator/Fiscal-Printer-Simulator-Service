@@ -1,23 +1,27 @@
-﻿using FiscalPrinterSimulatorLibraries.Exceptions;
+﻿using FiscalPrinterSimulatorLibraries.Commands;
+using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
 using System;
 using System.Linq;
 using System.Text;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBSETHDR
     /// </summary>
     public class SetupReciptHeaderCommandHandler : BaseCommandHandler
     {
-        public SetupReciptHeaderCommandHandler(FiscalPrinterCommand command) : base(command)
+        public SetupReciptHeaderCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
             var headerEndIndex = command.Parameters.IndexOf("?");
+
             if(headerEndIndex == -1)
             {
                 throw new FP_IllegalOperationException("End Sign of Recipt Header was not found in passed command.");
@@ -36,7 +40,7 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 reciptHeaderBuilder.AppendLine(e);
             });
 
-            fiscalPrinterState.FiscalPrinterHeader = reciptHeaderBuilder.ToString();
+            state.FiscalPrinterHeader = reciptHeaderBuilder.ToString();
 
             return new CommandHandlerResponse();
         }

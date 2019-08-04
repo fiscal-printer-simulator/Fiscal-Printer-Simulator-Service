@@ -1,21 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using FiscalPrinterSimulatorLibraries.Commands;
 using FiscalPrinterSimulatorLibraries.Exceptions;
 using FiscalPrinterSimulatorLibraries.Models;
+using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace FiscalPrinterSimulatorLibraries.Commands
+namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
     /// <summary>
     /// Command handler for command LBTRSHDR
     /// </summary>
     public class StartTransactionCommandHandler : BaseCommandHandler
     {
-        public StartTransactionCommandHandler(FiscalPrinterCommand command) : base(command)
+        public StartTransactionCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
-        public override CommandHandlerResponse Handle(FiscalPrinterState fiscalPrinterState)
+        public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)
         {
+            var state = fiscalPrinterState as FiscalPrinterState;
+
             try
             {
                 if (!command.PnArguments.Any())
@@ -32,16 +36,16 @@ namespace FiscalPrinterSimulatorLibraries.Commands
                 }
                 else
                 {
-                    fiscalPrinterState.LinesOnTransaction = numberOfLines;
-                    fiscalPrinterState.IsInTransactionState = true;
-                    fiscalPrinterState.SlipLines = new List<SlipLine>();
+                    state.LinesOnTransaction = numberOfLines;
+                    state.IsInTransactionState = true;
+                    state.SlipLines = new List<SlipLine>();
                     return new CommandHandlerResponse();
                 }
             }
             catch
             {
-                fiscalPrinterState.LinesOnTransaction = -1;
-                fiscalPrinterState.IsInTransactionState = false;
+                state.LinesOnTransaction = -1;
+                state.IsInTransactionState = false;
                 throw;
             }
         }

@@ -1,17 +1,20 @@
-﻿using FiscalPrinterSimulatorLibraries;
-using FiscalPrinterSimulatorService.ReduxActions;
-using Fleck;
+﻿using Fleck;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
+using System.Linq;
+using System.Reflection;
 using System.ServiceProcess;
+using FiscalPrinterSimulatorLibraries;
+using FiscalPrinterSimulatorService.ReduxActions;
 
 namespace FiscalPrinterSimulatorService
 {
     public class FiscalPrinterSimulatorService : ServiceBase
     {
         private static readonly object _locker = new object();
-        private readonly IFiscalPrinter _printer;
+        private IFiscalPrinter _printer;
         private readonly WebSocketServer _server;
         private readonly SerialPort _serialPort;
         private readonly List<IWebSocketConnection> _connections;
@@ -23,11 +26,11 @@ namespace FiscalPrinterSimulatorService
                 Environment.GetEnvironmentVariable("FP_SERVICE_PORT")
                 : "8181";
             _serialPort = new SerialPort();
-            _printer = new ThermalFiscalPrinter();
             _connections = new List<IWebSocketConnection>();
             _server = new WebSocketServer($"ws://0.0.0.0:{websocketPort}");
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_DataReceived);
             this.ServiceName = "Fiscal Printer Simulator";
+            LoadFiscalPrinterHandlingPlugins();
         }
 
         public void RunServiceAsConsoleApp(string[] args)
@@ -106,6 +109,35 @@ namespace FiscalPrinterSimulatorService
                     serialPort.Write(commandHandlerResponse.OutputCommand.ToString());
                 }
             }
+        }
+
+
+        private void LoadFiscalPrinterHandlingPlugins()
+        {
+            var path = "./Plugins";
+#if DEBUG && x64
+            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x64\netcoreapp2.2";
+#elif DEBUG && x86
+            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x86\netcoreapp2.2";
+#endif
+
+            var plugins = Directory.GetFiles(path, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)
+                .Select(m=> Path.GetFullPath(m))
+                .Where(m =>!m.Contains("Base"))
+                .Select(m => Assembly.LoadFrom(m))
+                .Where(m => m != null)
+                .SelectMany(m => m.GetTypes())
+                .ToList()
+                .Where(m => !m.IsInterface && !m.IsAbstract && m.GetInterface(typeof(IFiscalPrinter).FullName) != null)
+                .Select(m=> (IFiscalPrinter)Activator.CreateInstance(m))
+                .ToList();
+
+            if (plugins.Count() == 1)
+            {
+                _printer = plugins.First();
+            }
+
+
         }
     }
 }
