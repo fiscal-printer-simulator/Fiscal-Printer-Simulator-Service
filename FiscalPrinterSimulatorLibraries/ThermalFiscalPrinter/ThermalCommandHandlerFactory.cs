@@ -27,7 +27,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries
                 case "#u":
                     return new ReadingHeaderCommandHandler(command);
                 case "$r":
-                    return new SetupDiscountCalculationMethodCommandHandler(command);
+                    return new SetupPaperKnifeHeightAndClientDisplayCommandHander(command);
                 case "#l":
                     return new FeedPapperCommandHandler(command);
                 case "#e":
