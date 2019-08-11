@@ -116,9 +116,9 @@ namespace FiscalPrinterSimulatorService
         {
             var path = "./Plugins";
 #if DEBUG && x64
-            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x64\netcoreapp2.2";
+            path = @"..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x64\";
 #elif DEBUG && x86
-            path = @"..\..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x86\netcoreapp2.2";
+            path = @"..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x86\";
 #endif
 
             var plugins = Directory.GetFiles(path, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)

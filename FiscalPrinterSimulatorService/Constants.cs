@@ -5,7 +5,6 @@ namespace FiscalPrinterSimulatorService
 {
     public class Constants
     {
-        public const string MergedTranslationsFileName = "_translations.json";
         public const string CurrentTranslationsFileNamePattern = "translations-*.json";
 
         public static string TranslationsFileDirectoryPath = 

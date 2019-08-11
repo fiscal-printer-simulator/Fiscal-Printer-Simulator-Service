@@ -3,6 +3,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>BaseFiscalPrinterSimulatorLibraries</AssemblyName>
     <RootNamespace>FiscalPrinterSimulatorLibraries</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputType>Library</OutputType>
     <OutputPath>bin\$(Platform)</OutputPath>
     <Platforms>x64;x86</Platforms>

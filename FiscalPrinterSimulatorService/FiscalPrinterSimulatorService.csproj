@@ -6,6 +6,10 @@
     <Platforms>x64;x86</Platforms>
     <AssemblyName>FiscalPrinterSimulatorService</AssemblyName>
     <RootNamespace>FiscalPrinterSimulatorService</RootNamespace>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Platform)' == x86">
@@ -16,6 +20,12 @@
     <PlatformTarget>x64</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == Release">
+    <OutputPath>..\..\..\Resources\Binaries</OutputPath>
+  </PropertyGroup>
+  
+  
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <DefineConstants>DEBUG;x64</DefineConstants>
   </PropertyGroup>
@@ -33,16 +43,6 @@
     <PackageReference Include="Fleck" Version="1.1.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.0.0-preview7.19362.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FiscalPrinterSimulatorLibraries\BaseFiscalPrinter\BaseFiscalPrinter.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="FiscalPrinterSimulatorService.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-
 </Project>

@@ -6,7 +6,6 @@ dotnet: 2.2
 script:
   - dotnet restore
   - dotnet build
-  - cd ./FiscalPrinterSimulatorLibraries/UnitTests/ThermalFiscalPrinter.Unit.Tests
   - dotnet test
 global:
   - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
