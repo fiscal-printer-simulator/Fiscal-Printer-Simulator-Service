@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FiscalPrinterSimulatorLibraries.Commands;
@@ -10,9 +9,9 @@ using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
-    public class CashierLoginCommandHandler : BaseCommandHandler
+    public class CashierLogoutCommandHandler : BaseCommandHandler
     {
-        public CashierLoginCommandHandler(BaseFiscalPrinterCommand command) : base(command)
+        public CashierLogoutCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
@@ -29,6 +28,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             {
                 throw new FP_IllegalOperationException("Cannot handle this command in transaction state.");
             }
+
 
             var parameters = command.Parameters.Split((char)Constants.ASCICodeCR).Where(m => !string.IsNullOrWhiteSpace(m));
             if (parameters.Count() != 2)
@@ -59,7 +59,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             var printoutNumber = state.NextFiscalPrinterReciptId.ToString();
             reciptBuilder.AppendLine(leftLineOfDate.PadRight(Constants.ReciptWidth - printoutNumber.Length) + printoutNumber);
             reciptBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
-            reciptBuilder.AppendLine("Rozpoczęcie pracy kasjera");
+            reciptBuilder.AppendLine("Zakończenie pracy kasjera");
             reciptBuilder.AppendLine("Kasjer".PadRight(Constants.ReciptWidth - cashierLogin.Length) + cashierLogin);
             reciptBuilder.AppendLine("Numer kasy".PadRight(Constants.ReciptWidth - printerCode.Length) + printerCode);
             reciptBuilder.AppendLine();
