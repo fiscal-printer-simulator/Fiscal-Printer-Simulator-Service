@@ -44,6 +44,8 @@ namespace ThermalFiscalPrinterSimulatorLibraries
 
                 case "#p":
                     return new CashierLoginCommandHandler(command);
+                case " #q":
+                    return new CashierLogoutCommandHandler(command);
 
 
                 default:
