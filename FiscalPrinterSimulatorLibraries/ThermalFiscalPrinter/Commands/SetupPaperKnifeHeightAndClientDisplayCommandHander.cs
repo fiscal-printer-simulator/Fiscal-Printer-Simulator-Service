@@ -44,24 +44,24 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 if (firstArgument == "3")
                 {
                     //TODO: Save value to state ? 
-                    var papperSaveFunctionIsOn = secondArgument == "1";
+                   // var papperSaveFunctionIsOn = secondArgument == "1";
                 }
                 else if (firstArgument == "4")
                 {
                     //TODO: Save value to state ? 
-                    var showTransactionOnClientDisplay = secondArgument == "1";
+                   // var showTransactionOnClientDisplay = secondArgument == "1";
                 }
                 else if (firstArgument == "6")
                 {
                     //TODO: Save value to state ? 
-                    var KnifeHightUpper = secondArgument == "1";
+                   // var KnifeHightUpper = secondArgument == "1";
                 }
                 else if (command.PnArguments.Count() == 3 && firstArgument == "5")
                 {
                     var thirdArgument = command.PnArguments.ElementAt(2);
                     if (secondArgument == "0")
                     {
-                        if(!Enum.TryParse<BacklightOption>(thirdArgument, out BacklightOption backlightOption))
+                        if (!Enum.TryParse<BacklightOption>(thirdArgument, out _))
                         {
                             throw new FP_BadFormatOfArgumentException("Backlight option support only [0,1,2] arguments");
                         }

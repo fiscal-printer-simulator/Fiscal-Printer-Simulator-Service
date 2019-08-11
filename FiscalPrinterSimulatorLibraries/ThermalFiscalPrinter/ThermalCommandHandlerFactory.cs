@@ -42,6 +42,9 @@ namespace ThermalFiscalPrinterSimulatorLibraries
                 case "$e":
                     return new CancelOrApproveTransactionCommandHandler(command);
 
+                case "#p":
+                    return new CashierLoginCommandHandler(command);
+
 
                 default:
                     throw new NotImplementedException("Command not exists yet.");
