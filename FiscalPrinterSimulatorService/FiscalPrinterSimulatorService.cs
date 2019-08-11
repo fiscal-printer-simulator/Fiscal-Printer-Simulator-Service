@@ -87,7 +87,7 @@ namespace FiscalPrinterSimulatorService
             }
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs _)
         {
             var serialPort = sender as SerialPort;
             if (serialPort is null)
