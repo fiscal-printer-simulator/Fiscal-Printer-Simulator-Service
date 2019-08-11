@@ -9,7 +9,7 @@ using ThermalFiscalPrinterSimulatorLibraries.Models;
 namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
-    public class CasherLoginCommandHandlerTest
+    public class CasherLogoutCommandHandlerTest
     {
         [Test]
         public void When_RTC_Clock_Not_Initialize_Should_Throw_Error()
@@ -17,7 +17,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             //Arrange
             var state = new FiscalPrinterState();
             var command = new ThermalFiscalPrinterCommand(null, "#p", null, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
             //Assert
             Assert.Throws<FP_IllegalOperationException>(() =>
@@ -32,7 +32,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             //Arrange
             var state = new FiscalPrinterState() { TimeDiffrenceInMinutes = 0, IsInTransactionState = true };
             var command = new ThermalFiscalPrinterCommand(null, "#p", null, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
             //Assert
             Assert.Throws<FP_IllegalOperationException>(() =>
@@ -41,13 +41,14 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             });
         }
 
+
         [Test]
         public void When_Pass_Command_Without_Parameters_Should_Throw_Error()
         {
             //Arrange
             var state = new FiscalPrinterState() { TimeDiffrenceInMinutes = 0 };
             var command = new ThermalFiscalPrinterCommand(null, "#p", string.Empty, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
             //Assert
             Assert.Throws<FP_WrongNumberOfArgumentsException>(() =>
@@ -70,7 +71,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             var passedParameters = $"{cashierLogin}{crChar}{printerCode}{crChar}";
             var state = new FiscalPrinterState() { TimeDiffrenceInMinutes = 0 };
             var command = new ThermalFiscalPrinterCommand(null, "#p", passedParameters, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
             //Assert
             Assert.Throws<FP_BadFormatOfArgumentException>(() =>
@@ -89,7 +90,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             var passedParameters = $"{cashierLogin}{crChar}{printerCode}{crChar}";
             var state = new FiscalPrinterState() { TimeDiffrenceInMinutes = 0 };
             var command = new ThermalFiscalPrinterCommand(null, "#p", passedParameters, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
             //Assert
             Assert.Throws<FP_BadFormatOfArgumentException>(() =>
@@ -112,7 +113,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
                 FiscalPrinterHeader = "HEADER TEST".PadCenter(ThermalFiscalPrinterSimulatorLibraries.Constants.ReciptWidth)
             };
             var command = new ThermalFiscalPrinterCommand(null, "#p", passedParameters, string.Empty, string.Empty);
-            var handler = new CashierLoginCommandHandler(command);
+            var handler = new CashierLogoutCommandHandler(command);
             //Act
 
             var result = handler.Handle(state);
@@ -124,7 +125,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             expectedPrintout.AppendLine("              HEADER TEST               ");
             expectedPrintout.AppendLine($"{dateToString}                             1");
             expectedPrintout.AppendLine("         N I E F I S K A L N Y          ");
-            expectedPrintout.AppendLine("Rozpoczęcie pracy kasjera");
+            expectedPrintout.AppendLine("Zakończenie pracy kasjera");
             expectedPrintout.AppendLine($"Kasjer                            {cashierLogin}");
             expectedPrintout.AppendLine($"Numer kasy                          {printerCode}");
             expectedPrintout.AppendLine();
