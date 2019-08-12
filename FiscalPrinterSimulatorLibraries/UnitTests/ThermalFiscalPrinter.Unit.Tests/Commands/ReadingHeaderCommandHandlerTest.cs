@@ -1,10 +1,9 @@
-﻿using FiscalPrinterSimulatorLibraries.Commands;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Text;
 using ThermalFiscalPrinterSimulatorLibraries.Commands;
 using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
     public class ReadingHeaderCommandHandlerTest

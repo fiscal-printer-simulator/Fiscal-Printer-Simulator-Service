@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using ThermalFiscalPrinterSimulatorLibraries.Commands;
 
-namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
     public class CANCommandHandlerTest

@@ -1,5 +1,4 @@
-﻿using FiscalPrinterSimulatorLibraries.Commands;
-using FiscalPrinterSimulatorLibraries.Exceptions;
+﻿using FiscalPrinterSimulatorLibraries.Exceptions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using ThermalFiscalPrinterSimulatorLibraries;
 using ThermalFiscalPrinterSimulatorLibraries.Commands;
 using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
     public class SetupReciptHeaderCommandHandlerTest
