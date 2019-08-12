@@ -9,7 +9,7 @@ using ThermalFiscalPrinterSimulatorLibraries.Commands;
 using ThermalFiscalPrinterSimulatorLibraries.Models;
 using static ThermalFiscalPrinterSimulatorLibraries.Models.PTUTypes;
 
-namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
     public class ChangeInPTURatesCommandHandlerTest

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using ThermalFiscalPrinterSimulatorLibraries.Commands;
 using ThermalFiscalPrinterSimulatorLibraries.Models;
 
-namespace ThermalFiscalPrinter.Unit.Tests.Commands.Thermal
+namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
     public class DLECommandHandlerTest
