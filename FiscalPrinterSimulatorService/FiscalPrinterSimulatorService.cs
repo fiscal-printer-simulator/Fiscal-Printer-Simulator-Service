@@ -108,6 +108,13 @@ namespace FiscalPrinterSimulatorService
                 {
                     serialPort.Write(commandHandlerResponse.OutputCommand.ToString());
                 }
+                if(commandHandlerResponse.ClientLineDisplayOutputLine != null)
+                {
+                    _connections.ForEach(connection =>
+                    WebsocketActionDispatcher.SendMessage(connection,
+                        new SendClientLineDisplayOutputLine(commandHandlerResponse.ClientLineDisplayOutputLine)
+                        ));
+                }
             }
         }
 
