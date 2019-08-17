@@ -11,7 +11,7 @@ using FiscalPrinterSimulatorService.ReduxActions;
 
 namespace FiscalPrinterSimulatorService
 {
-    public class FiscalPrinterSimulatorService : ServiceBase
+    public partial class FiscalPrinterSimulatorService : ServiceBase
     {
         private static readonly object _locker = new object();
         private IFiscalPrinter _printer;
@@ -22,6 +22,9 @@ namespace FiscalPrinterSimulatorService
 
         public FiscalPrinterSimulatorService()
         {
+#if DEBUG
+            System.Diagnostics.Debugger.Launch();
+#endif
             var websocketPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FP_SERVICE_PORT")) ?
                 Environment.GetEnvironmentVariable("FP_SERVICE_PORT")
                 : "8181";
@@ -31,6 +34,7 @@ namespace FiscalPrinterSimulatorService
             _serialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_DataReceived);
             this.ServiceName = "Fiscal Printer Simulator";
             LoadFiscalPrinterHandlingPlugins();
+            InitializeComponent();
         }
 
         public void RunServiceAsConsoleApp(string[] args)
@@ -38,11 +42,11 @@ namespace FiscalPrinterSimulatorService
             this.OnStart(args);
             Console.WriteLine("Service starts successfully");
             Console.WriteLine("Click any key to continue...");
-            Console.ReadKey();
-            this.OnStop();
-            Console.WriteLine("Service stops successfully");
-            Console.WriteLine("Click any key to continue...");
-            Console.ReadKey();
+           // Console.ReadKey();
+            while (true)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
         }
 
         protected override void OnStart(string[] args)
@@ -121,14 +125,7 @@ namespace FiscalPrinterSimulatorService
 
         private void LoadFiscalPrinterHandlingPlugins()
         {
-            var path = "./Plugins";
-#if DEBUG && x64
-            path = @"..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x64\";
-#elif DEBUG && x86
-            path = @"..\..\..\..\FiscalPrinterSimulatorLibraries\ThermalFiscalPrinter\bin\x86\";
-#endif
-
-            var plugins = Directory.GetFiles(path, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)
+            var plugins = Directory.GetFiles(Constants.PluginsAssemblyDirectoryPath, "*FiscalPrinterSimulatorLibraries.dll", SearchOption.TopDirectoryOnly)
                 .Select(m=> Path.GetFullPath(m))
                 .Where(m =>!m.Contains("Base"))
                 .Select(m => Assembly.LoadFrom(m))

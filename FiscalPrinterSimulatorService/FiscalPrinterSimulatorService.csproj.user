@@ -5,5 +5,8 @@
     <Compile Update="FiscalPrinterSimulatorService.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="FiscalPrinterSimulatorServiceInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
 </Project>

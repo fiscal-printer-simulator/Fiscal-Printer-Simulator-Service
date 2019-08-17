@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThermalFiscalPrinter.Unit.Tests", "FiscalPrinterSimulatorLibraries\UnitTests\ThermalFiscalPrinter.Unit.Tests\ThermalFiscalPrinter.Unit.Tests.csproj", "{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FiscalPrinterSimulatorService", "FiscalPrinterSimulatorService\FiscalPrinterSimulatorService.csproj", "{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FiscalPrinterSimulatorService", "FiscalPrinterSimulatorService\FiscalPrinterSimulatorService.csproj", "{A276D835-00E1-4E27-ABE4-4BD71919D875}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +47,14 @@ Global
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x64.Build.0 = Release|x64
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x86.ActiveCfg = Release|x86
 		{E2D39905-0C4F-40A9-AA57-C2F624FA88F2}.Release|x86.Build.0 = Release|x86
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x64.ActiveCfg = Debug|x64
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x64.Build.0 = Debug|x64
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x86.ActiveCfg = Debug|x86
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Debug|x86.Build.0 = Debug|x86
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x64.ActiveCfg = Release|x64
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x64.Build.0 = Release|x64
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x86.ActiveCfg = Release|x86
-		{71225B70-1CA4-4BE0-A48B-E86038ACE5AA}.Release|x86.Build.0 = Release|x86
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Debug|x64.ActiveCfg = Debug|x64
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Debug|x64.Build.0 = Debug|x64
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Debug|x86.ActiveCfg = Debug|x86
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Debug|x86.Build.0 = Debug|x86
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Release|x64.ActiveCfg = Release|x64
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Release|x64.Build.0 = Release|x64
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Release|x86.ActiveCfg = Release|x86
+		{A276D835-00E1-4E27-ABE4-4BD71919D875}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

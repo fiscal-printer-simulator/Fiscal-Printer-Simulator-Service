@@ -116,7 +116,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
                 actualDateTime.Minute,
                 0
             };
-            return string.Join(';', actualDateTimeCollection);
+            return string.Join(";", actualDateTimeCollection);
         }
     }
 }

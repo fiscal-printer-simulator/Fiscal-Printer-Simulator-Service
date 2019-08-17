@@ -7,7 +7,10 @@ namespace FiscalPrinterSimulatorService
     {
         public const string CurrentTranslationsFileNamePattern = "translations-*.json";
 
-        public static string TranslationsFileDirectoryPath = 
-                   Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),"Translations");
+        private static string _rootPath = 
+            Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+        public static string TranslationsFileDirectoryPath = Path.Combine(_rootPath, "Translations");
+        public static string PluginsAssemblyDirectoryPath = Path.Combine(_rootPath, "Plugins");
     }
 }

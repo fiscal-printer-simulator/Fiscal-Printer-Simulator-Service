@@ -9,6 +9,9 @@ using ThermalFiscalPrinterSimulatorLibraries.Models;
 
 namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 {
+    /// <summary>
+    /// Command handler for command LBLOGOUT
+    /// </summary>
     public class CashierLogoutCommandHandler : BaseCommandHandler
     {
         public CashierLogoutCommandHandler(BaseFiscalPrinterCommand command) : base(command)

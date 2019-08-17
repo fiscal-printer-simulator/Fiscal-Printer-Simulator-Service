@@ -33,7 +33,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 0
             };
 
-            var commandParameters = string.Join(';', arrayOfRTCParameters);
+            var commandParameters = string.Join(";", arrayOfRTCParameters);
             var outputCommand = new ThermalFiscalPrinterCommand(new string[] { "1" }, "#C", commandParameters);
 
             return new CommandHandlerResponse(outputCommand);
