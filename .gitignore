@@ -4,3 +4,4 @@ FiscalPrinterSimulatorService/obj
 FiscalPrinterSimulatorService/bin
 FiscalPrinterSimulatorLibraries/**/obj
 FiscalPrinterSimulatorLibraries/**/bin
+.nuget/
