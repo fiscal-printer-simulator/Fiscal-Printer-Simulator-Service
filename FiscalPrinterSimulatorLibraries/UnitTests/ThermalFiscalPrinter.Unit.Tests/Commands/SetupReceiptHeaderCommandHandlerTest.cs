@@ -11,7 +11,7 @@ using ThermalFiscalPrinterSimulatorLibraries.Models;
 namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
-    public class SetupReciptHeaderCommandHandlerTest
+    public class SetupReceiptHeaderCommandHandlerTest
     {
 
         [Test]
@@ -22,7 +22,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
 
             var state = new FiscalPrinterState();
             var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader);
-            var commandHandler = new SetupReciptHeaderCommandHandler(command);
+            var commandHandler = new SetupReceiptHeaderCommandHandler(command);
 
             //Act
             //Assert
@@ -43,7 +43,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
 
             var state = new FiscalPrinterState();
             var command = new ThermalFiscalPrinterCommand(null, null, reciptHeader + "?");
-            var commandHandler = new SetupReciptHeaderCommandHandler(command);
+            var commandHandler = new SetupReceiptHeaderCommandHandler(command);
 
             //Act
             //Assert
@@ -73,13 +73,13 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
 
             var state = new FiscalPrinterState();
             var command = new ThermalFiscalPrinterCommand(null, null, reciptHeaderInput + "?");
-            var commandHandler = new SetupReciptHeaderCommandHandler(command);
+            var commandHandler = new SetupReceiptHeaderCommandHandler(command);
 
             //Act
             var result = commandHandler.Handle(state);
             //Assert
             Assert.IsNull(result.OutputCommand);
-            Assert.AreEqual(result.OutputReciptBuffer, string.Empty);
+            Assert.AreEqual(result.OutputReceiptBuffer, string.Empty);
 
             StringBuilder stringBuilder = new StringBuilder();
             reciptHeaderRows.ForEach(row => stringBuilder.AppendLine(row));

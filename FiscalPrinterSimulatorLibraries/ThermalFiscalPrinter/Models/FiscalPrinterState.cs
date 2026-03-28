@@ -60,10 +60,10 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Models
         private string CreateDefaulHeader()
         {
             StringBuilder headerBuilder = new StringBuilder();
-            headerBuilder.AppendLine("Michal Wojcik".PadCenter(Constants.ReciptWidth));
-            headerBuilder.AppendLine(".Net Developer".PadCenter(Constants.ReciptWidth));
-            headerBuilder.AppendLine("40-000 Katowice".PadCenter(Constants.ReciptWidth));
-            headerBuilder.AppendLine("NIP 999-99-99-999".PadCenter(Constants.ReciptWidth));
+            headerBuilder.AppendLine("Michal Wojcik".PadCenter(Constants.ReceiptWidth));
+            headerBuilder.AppendLine(".Net Developer".PadCenter(Constants.ReceiptWidth));
+            headerBuilder.AppendLine("40-000 Katowice".PadCenter(Constants.ReceiptWidth));
+            headerBuilder.AppendLine("NIP 999-99-99-999".PadCenter(Constants.ReceiptWidth));
             headerBuilder.AppendLine();
             return headerBuilder.ToString();
         }

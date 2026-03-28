@@ -22,9 +22,6 @@ namespace FiscalPrinterSimulatorService
 
         public FiscalPrinterSimulatorService()
         {
-#if DEBUG
-            System.Diagnostics.Debugger.Launch();
-#endif
             var websocketPort = !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("FP_SERVICE_PORT")) ?
                 Environment.GetEnvironmentVariable("FP_SERVICE_PORT")
                 : "8181";
@@ -41,8 +38,7 @@ namespace FiscalPrinterSimulatorService
         {
             this.OnStart(args);
             Console.WriteLine("Service starts successfully");
-            Console.WriteLine("Click any key to continue...");
-           // Console.ReadKey();
+            Console.WriteLine("Press Ctrl+C to stop...");
             while (true)
             {
                 System.Threading.Thread.Sleep(100);
@@ -62,7 +58,7 @@ namespace FiscalPrinterSimulatorService
                     }
                     WebsocketActionDispatcher.SendMessage(socket, new ActualTranslationsForSimulatorClientAction());
                     WebsocketActionDispatcher.SendMessage(socket, new ActualServerStateAction(_serialPort));
-                    WebsocketActionDispatcher.SendMessage(socket, new AvaliblePortsAction());
+                    WebsocketActionDispatcher.SendMessage(socket, new AvailablePortsAction());
                 };
                 socket.OnClose = () => _connections.Remove(socket);
                 socket.OnMessage = message =>
@@ -101,11 +97,11 @@ namespace FiscalPrinterSimulatorService
 
             foreach (var commandHandlerResponse in commandHandlersResponses)
             {
-                if (!string.IsNullOrEmpty(commandHandlerResponse.OutputReciptBuffer))
+                if (!string.IsNullOrEmpty(commandHandlerResponse.OutputReceiptBuffer))
                 {
                     _connections.ForEach(connection =>
                     WebsocketActionDispatcher.SendMessage(connection,
-                        new SendReceiptOuptutDataAction(commandHandlerResponse.OutputReciptBuffer)
+                        new SendReceiptOutputDataAction(commandHandlerResponse.OutputReceiptBuffer)
                         ));
                 }
                 if (commandHandlerResponse.OutputCommand != null)

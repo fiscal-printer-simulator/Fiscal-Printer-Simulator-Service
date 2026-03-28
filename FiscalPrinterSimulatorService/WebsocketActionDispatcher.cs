@@ -26,7 +26,7 @@ namespace FiscalPrinterSimulatorService
             {
                 case ReduxActionType.UNKNOWN:
                     break;
-                case ReduxActionType.RECEIVED_AVALIBLE_COM_PORTS:
+                case ReduxActionType.RECEIVED_AVAILABLE_COM_PORTS:
                     break;
                 case ReduxActionType.CONNECT_TO_COM_PORT:
                     if (!baseAction.payload.TryGetValue("portName", out object portName))
@@ -58,7 +58,7 @@ namespace FiscalPrinterSimulatorService
                     }
                     break;
 
-                case ReduxActionType.RECEIVE_RECIPT_DATA:
+                case ReduxActionType.RECEIVE_RECEIPT_DATA:
                     break;
                 default:
                     break;

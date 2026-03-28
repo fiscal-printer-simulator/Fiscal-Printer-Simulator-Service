@@ -65,9 +65,9 @@ namespace ThermalFiscalPrinterSimulatorLibraries
         public const double PTUTaxFreeRate = 100;
 
         /// <summary>
-        /// Max number of characters in one recipt line.
+        /// Max number of characters in one receipt line.
         /// </summary>
-        public const int ReciptWidth = 40;
+        public const int ReceiptWidth = 40;
 
         /// <summary>
         /// Carriage Return ASCI Sign. It can be used to separate parameters in a command.

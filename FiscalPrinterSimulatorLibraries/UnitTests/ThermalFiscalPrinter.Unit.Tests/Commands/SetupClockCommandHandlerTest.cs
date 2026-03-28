@@ -194,7 +194,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
 
             StringBuilder reciptBody = new StringBuilder();
             reciptBody.AppendLine();
-            reciptBody.AppendLine("PROGRAMOWANIE ZEGARA".PadCenter(Constants.ReciptWidth));
+            reciptBody.AppendLine("PROGRAMOWANIE ZEGARA".PadCenter(Constants.ReceiptWidth));
             reciptBody.AppendLine();
             reciptBody.AppendLine($"Zegar przed zmianą:     {actualFPDateTime.ToString("yyyy-MM-dd,HH:mm")}");
             reciptBody.AppendLine($"Zegar po zmianie:       {newDateTime.ToString("yyyy-MM-dd,HH:mm")}");
@@ -206,7 +206,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             var response = handler.Handle(_state);
             //Assert
 
-            Assert.AreEqual(expectedReciptBody, response.OutputReciptBuffer);
+            Assert.AreEqual(expectedReciptBody, response.OutputReceiptBuffer);
         }
     }
 }
