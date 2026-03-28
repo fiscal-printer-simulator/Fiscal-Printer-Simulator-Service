@@ -121,30 +121,30 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
 
             //Assert
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
-            stringBuilder.AppendLine("Z m i a n a  s t a w e k  P T U".PadCenter(Constants.ReciptWidth));
-            stringBuilder.AppendLine("Stare PTU:".PadRight(Constants.ReciptWidth));
-            stringBuilder.AppendLine("PTU A".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU B".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU C".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU D".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU E".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU F".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU G".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("---------------------------------------------------------------".Substring(0, Constants.ReciptWidth));
-            stringBuilder.AppendLine("Nowe PTU:".PadRight(Constants.ReciptWidth));
-            stringBuilder.AppendLine("PTU A".PadRight(Constants.ReciptWidth - 7) + "23,00 %");
-            stringBuilder.AppendLine("PTU B".PadRight(Constants.ReciptWidth - 6) + "7,00 %");
-            stringBuilder.AppendLine("PTU C".PadRight(Constants.ReciptWidth - 6) + "6,00 %");
-            stringBuilder.AppendLine("PTU D".PadRight(Constants.ReciptWidth - 6) + "4,50 %");
-            stringBuilder.AppendLine("PTU E".PadRight(Constants.ReciptWidth - 6) + "2,00 %");
-            stringBuilder.AppendLine("PTU F".PadRight(Constants.ReciptWidth - 3) + "---");
-            stringBuilder.AppendLine("PTU G".PadRight(Constants.ReciptWidth - 9) + "SP.ZW.PTU");
-            stringBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
+            stringBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
+            stringBuilder.AppendLine("Z m i a n a  s t a w e k  P T U".PadCenter(Constants.ReceiptWidth));
+            stringBuilder.AppendLine("Stare PTU:".PadRight(Constants.ReceiptWidth));
+            stringBuilder.AppendLine("PTU A".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU B".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU C".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU D".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU E".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU F".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU G".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("---------------------------------------------------------------".Substring(0, Constants.ReceiptWidth));
+            stringBuilder.AppendLine("Nowe PTU:".PadRight(Constants.ReceiptWidth));
+            stringBuilder.AppendLine("PTU A".PadRight(Constants.ReceiptWidth - 7) + "23,00 %");
+            stringBuilder.AppendLine("PTU B".PadRight(Constants.ReceiptWidth - 6) + "7,00 %");
+            stringBuilder.AppendLine("PTU C".PadRight(Constants.ReceiptWidth - 6) + "6,00 %");
+            stringBuilder.AppendLine("PTU D".PadRight(Constants.ReceiptWidth - 6) + "4,50 %");
+            stringBuilder.AppendLine("PTU E".PadRight(Constants.ReceiptWidth - 6) + "2,00 %");
+            stringBuilder.AppendLine("PTU F".PadRight(Constants.ReceiptWidth - 3) + "---");
+            stringBuilder.AppendLine("PTU G".PadRight(Constants.ReceiptWidth - 9) + "SP.ZW.PTU");
+            stringBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
 
-            System.Console.WriteLine(result.OutputReciptBuffer);
+            System.Console.WriteLine(result.OutputReceiptBuffer);
             System.Console.WriteLine(stringBuilder.ToString());
-            Assert.AreEqual(stringBuilder.ToString(), result.OutputReciptBuffer);
+            Assert.AreEqual(stringBuilder.ToString(), result.OutputReceiptBuffer);
         }
 
     }

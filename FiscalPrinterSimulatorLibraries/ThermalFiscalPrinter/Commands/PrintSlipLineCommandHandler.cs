@@ -200,9 +200,9 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 var transactionCounter = state.TransactionCounter.ToString();
 
                 slipBuilder.AppendLine(state.FiscalPrinterHeader);
-                slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReciptWidth - transactionCounter.Length) + transactionCounter);
-                slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReciptWidth));
-                slipBuilder.AppendLine("".PadLeft(Constants.ReciptWidth, '-'));
+                slipBuilder.AppendLine(fiscalPrinterDate.PadRight(Constants.ReceiptWidth - transactionCounter.Length) + transactionCounter);
+                slipBuilder.AppendLine("P A R A G O N  F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
+                slipBuilder.AppendLine("".PadLeft(Constants.ReceiptWidth, '-'));
 
             }
 
@@ -217,14 +217,14 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             }
 
             string financialSlipText = $"{slipLine.Ammount}x{slipLine.ProductPrice.ToString("0.00")}    {slipLine.TotalPrice.ToString("0.00")}{slipLine.PTU.ToString()}";
-            if (Constants.ReciptWidth - financialSlipText.Length < slipLine.ProductName.Length)
+            if (Constants.ReceiptWidth - financialSlipText.Length < slipLine.ProductName.Length)
             {
-                slipBuilder.AppendLine(slipLine.ProductName.PadRight(Constants.ReciptWidth));
-                slipBuilder.AppendLine(financialSlipText.PadLeft(Constants.ReciptWidth));
+                slipBuilder.AppendLine(slipLine.ProductName.PadRight(Constants.ReceiptWidth));
+                slipBuilder.AppendLine(financialSlipText.PadLeft(Constants.ReceiptWidth));
             }
             else
             {
-                var paddingValue = Constants.ReciptWidth - financialSlipText.Length;
+                var paddingValue = Constants.ReceiptWidth - financialSlipText.Length;
                 slipBuilder.AppendLine(slipLine.ProductName.PadRight(paddingValue) + financialSlipText);
             }
 
@@ -256,10 +256,10 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
 
                 slipBuilder.AppendLine(discountSlipLineLeftPart.PadRight(
-                                Constants.ReciptWidth - discountSlipLineRightPart.Length)
+                                Constants.ReceiptWidth - discountSlipLineRightPart.Length)
                                 + discountSlipLineRightPart);
 
-                slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReciptWidth));
+                slipBuilder.AppendLine($"{discountValueAmmount.ToString("0.00")}{slipLine.PTU.ToString()}".PadLeft(Constants.ReceiptWidth));
             }
 
             state.SlipLines.Add(slipLine);

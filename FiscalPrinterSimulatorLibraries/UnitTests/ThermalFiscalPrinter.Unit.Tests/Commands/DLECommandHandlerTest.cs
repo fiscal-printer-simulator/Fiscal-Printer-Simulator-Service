@@ -53,7 +53,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             var expected = new List<byte> { expectedResult };
 
             Assert.IsNotNull(result.OutputCommand);
-            Assert.AreEqual(result.OutputReciptBuffer, string.Empty);
+            Assert.AreEqual(result.OutputReceiptBuffer, string.Empty);
             Assert.AreEqual(expected, result.OutputCommand.ToBytesArray());
 
         }

@@ -11,9 +11,9 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
     /// <summary>
     /// Command handler for command LBSETHDR
     /// </summary>
-    public class SetupReciptHeaderCommandHandler : BaseCommandHandler
+    public class SetupReceiptHeaderCommandHandler : BaseCommandHandler
     {
-        public SetupReciptHeaderCommandHandler(BaseFiscalPrinterCommand command) : base(command)
+        public SetupReceiptHeaderCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
 
@@ -24,7 +24,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
             if(headerEndIndex == -1)
             {
-                throw new FP_IllegalOperationException("End Sign of Recipt Header was not found in passed command.");
+                throw new FP_IllegalOperationException("End Sign of Receipt Header was not found in passed command.");
             }
             var headerValue = command.Parameters.Substring(0, headerEndIndex);
             if (headerValue.Length > 500)

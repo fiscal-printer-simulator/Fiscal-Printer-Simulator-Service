@@ -10,9 +10,9 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
     /// <summary>
     /// Command handler for command LBSETRAB
     /// </summary>
-    public class SetupPaperKnifeHeightAndClientDisplayCommandHander : BaseCommandHandler
+    public class SetupPaperKnifeHeightAndClientDisplayCommandHandler : BaseCommandHandler
     {
-        public SetupPaperKnifeHeightAndClientDisplayCommandHander(BaseFiscalPrinterCommand command) : base(command)
+        public SetupPaperKnifeHeightAndClientDisplayCommandHandler(BaseFiscalPrinterCommand command) : base(command)
         {
         }
         public override CommandHandlerResponse Handle(IFiscalPrinterState fiscalPrinterState)

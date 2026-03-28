@@ -59,10 +59,10 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             string actualDateFormatted = actualDate.ToString("yyyy-MM-dd,HH:mm");
             string passedDateFormatted = passedDate.ToString("yyyy-MM-dd,HH:mm");
             reciptBody.AppendLine();
-            reciptBody.AppendLine("PROGRAMOWANIE ZEGARA".PadCenter(Constants.ReciptWidth));
+            reciptBody.AppendLine("PROGRAMOWANIE ZEGARA".PadCenter(Constants.ReceiptWidth));
             reciptBody.AppendLine();
-            reciptBody.AppendLine($"Zegar przed zmianą:".PadRight(Constants.ReciptWidth - actualDateFormatted.Length) + actualDateFormatted);
-            reciptBody.AppendLine($"Zegar po zmianie:".PadRight(Constants.ReciptWidth - passedDateFormatted.Length) + passedDateFormatted);
+            reciptBody.AppendLine($"Zegar przed zmianą:".PadRight(Constants.ReceiptWidth - actualDateFormatted.Length) + actualDateFormatted);
+            reciptBody.AppendLine($"Zegar po zmianie:".PadRight(Constants.ReceiptWidth - passedDateFormatted.Length) + passedDateFormatted);
             reciptBody.AppendLine();
 
             return new CommandHandlerResponse(reciptBody.ToString());

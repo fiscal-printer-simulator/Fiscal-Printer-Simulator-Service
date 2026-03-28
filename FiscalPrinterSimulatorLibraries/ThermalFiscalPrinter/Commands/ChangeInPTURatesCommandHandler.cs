@@ -50,23 +50,23 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
-            sb.AppendLine("Z m i a n a  s t a w e k  P T U".PadCenter(Constants.ReciptWidth));
-            sb.AppendLine("Stare PTU:".PadRight(Constants.ReciptWidth));
+            sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
+            sb.AppendLine("Z m i a n a  s t a w e k  P T U".PadCenter(Constants.ReceiptWidth));
+            sb.AppendLine("Stare PTU:".PadRight(Constants.ReceiptWidth));
             state.PTURates.ForEach(key =>
             {
                 sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, state));
             });
-            sb.AppendLine("-".PadRight(Constants.ReciptWidth, '-'));
+            sb.AppendLine("-".PadRight(Constants.ReceiptWidth, '-'));
 
             ChangePTURatesByCommand(state, ptuParameters);
 
-            sb.AppendLine("Nowe PTU:".PadRight(Constants.ReciptWidth));
+            sb.AppendLine("Nowe PTU:".PadRight(Constants.ReceiptWidth));
             state.PTURates.ForEach(key =>
             {
                 sb.AppendLine(PrintPTUValuesOnRecipt(key.Type, state));
             });
-            sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
+            sb.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
 
             var lastErrorCode = "0";
             var fiscalState = state.IsInFiscalState ? "1" : "0";
@@ -102,7 +102,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             var ptuValue = state.PTURates.First(m => m.Type == PTUType).ActualPercentageValue;
 
             var ptuRateString = ptuValue == Constants.PTUInactiveRate ? "---" : ptuValue == Constants.PTUTaxFreeRate ? "SP.ZW.PTU" : ptuValue.ToString("0.00", CultureInfo.CreateSpecificCulture("pl-PL")) + " %";
-            var numberOfSpace = Constants.ReciptWidth - ptuRateString.Length;
+            var numberOfSpace = Constants.ReceiptWidth - ptuRateString.Length;
             return $"PTU {PTUType.ToString()}".PadRight(numberOfSpace) + ptuRateString;
         }
 

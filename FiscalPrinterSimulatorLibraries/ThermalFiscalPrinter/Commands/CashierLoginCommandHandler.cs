@@ -60,16 +60,16 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             reciptBuilder.AppendLine(state.FiscalPrinterHeader);
             var leftLineOfDate = DateTime.Now.AddMinutes(state.TimeDiffrenceInMinutes).ToString("yyyy-MM-dd");
             var printoutNumber = state.NextFiscalPrinterReciptId.ToString();
-            reciptBuilder.AppendLine(leftLineOfDate.PadRight(Constants.ReciptWidth - printoutNumber.Length) + printoutNumber);
-            reciptBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
+            reciptBuilder.AppendLine(leftLineOfDate.PadRight(Constants.ReceiptWidth - printoutNumber.Length) + printoutNumber);
+            reciptBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
             reciptBuilder.AppendLine("Rozpoczęcie pracy kasjera");
-            reciptBuilder.AppendLine("Kasjer".PadRight(Constants.ReciptWidth - cashierLogin.Length) + cashierLogin);
-            reciptBuilder.AppendLine("Numer kasy".PadRight(Constants.ReciptWidth - printerCode.Length) + printerCode);
+            reciptBuilder.AppendLine("Kasjer".PadRight(Constants.ReceiptWidth - cashierLogin.Length) + cashierLogin);
+            reciptBuilder.AppendLine("Numer kasy".PadRight(Constants.ReceiptWidth - printerCode.Length) + printerCode);
             reciptBuilder.AppendLine();
-            reciptBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReciptWidth));
+            reciptBuilder.AppendLine("N I E F I S K A L N Y".PadCenter(Constants.ReceiptWidth));
             var rightLineOfTime = DateTime.Now.AddMinutes(state.TimeDiffrenceInMinutes).ToString("HH-mm-ss");
-            reciptBuilder.AppendLine($"    #{printerCode}     {cashierLogin}".PadRight(Constants.ReciptWidth - rightLineOfTime.Length) + rightLineOfTime);
-            reciptBuilder.AppendLine("12345678".PadCenter(Constants.ReciptWidth));
+            reciptBuilder.AppendLine($"    #{printerCode}     {cashierLogin}".PadRight(Constants.ReceiptWidth - rightLineOfTime.Length) + rightLineOfTime);
+            reciptBuilder.AppendLine("12345678".PadCenter(Constants.ReceiptWidth));
             reciptBuilder.AppendLine();
 
             state.NextFiscalPrinterReciptId += 1;

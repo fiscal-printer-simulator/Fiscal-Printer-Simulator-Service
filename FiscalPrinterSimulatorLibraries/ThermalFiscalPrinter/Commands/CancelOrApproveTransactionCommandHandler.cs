@@ -147,7 +147,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
 
                 StringBuilder approveTransactionBuilder = new StringBuilder();
-                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
+                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReceiptWidth, '-'));
                 if (discountType != TotalDiscountType.NO_DISCOUNT)
                 {
                     var subTotalLineRight = $"{totalAmmountWithoutDiscounts.ToString("0.00")} ";
@@ -156,8 +156,8 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
                     var discountValue = Math.Abs(totalDiscountValueInPLN).ToString("0.00") + " ";
 
-                    approveTransactionBuilder.AppendLine("Podsuma".PadRight(Constants.ReciptWidth - subTotalLineRight.Length) + subTotalLineRight);
-                    approveTransactionBuilder.AppendLine($"    {discountDescriptionText}".PadRight(Constants.ReciptWidth - discountValue.Length) + discountValue);
+                    approveTransactionBuilder.AppendLine("Podsuma".PadRight(Constants.ReceiptWidth - subTotalLineRight.Length) + subTotalLineRight);
+                    approveTransactionBuilder.AppendLine($"    {discountDescriptionText}".PadRight(Constants.ReceiptWidth - discountValue.Length) + discountValue);
                 }
 
                 var discountPercentage = ConvertDiscountToPercentage(discountType, discountValueForTransaction, totalAmmountWithoutDiscounts, optionalTotalDiscountPercentage);
@@ -183,46 +183,46 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
                 {
                     var totalInPTU = ptuOVerview.sum.ToString("0.00") + " ";
                     var totalInPTULeftLine = $"Sprzed. opodatk. {ptuOVerview.type.ToString()}"
-                        .PadRight(Constants.ReciptWidth - totalInPTU.Length);
+                        .PadRight(Constants.ReceiptWidth - totalInPTU.Length);
                     var totalPTUVal = ptuOVerview.ptuVal.ToString("0.00")+ " ";
                     var totalPTUValLeftLine = $"Kwota PTU {ptuOVerview.type.ToString()} {ptuOVerview.ptuPercentage} %"
-                        .PadRight(Constants.ReciptWidth - totalPTUVal.Length);
+                        .PadRight(Constants.ReceiptWidth - totalPTUVal.Length);
 
 
                     approveTransactionBuilder.AppendLine(totalInPTULeftLine + totalInPTU);
                     approveTransactionBuilder.AppendLine(totalPTUValLeftLine + totalPTUVal);
                 }
                 var totalPTUsValue = PTUsOverview.Sum(m => m.ptuVal).ToString("0.00") + " ";
-                approveTransactionBuilder.AppendLine("ŁĄCZNA KWOTA PTU".PadRight(Constants.ReciptWidth - totalPTUsValue.Length) + totalPTUsValue);
+                approveTransactionBuilder.AppendLine("ŁĄCZNA KWOTA PTU".PadRight(Constants.ReceiptWidth - totalPTUsValue.Length) + totalPTUsValue);
 
                 var totalSumArray = passedTotalAmmount.ToString("0.00").ToArray();
                 var totalSum = string.Join(" ", totalSumArray) + " ";
-                approveTransactionBuilder.AppendLine("S U M A".PadRight(Constants.ReciptWidth - totalSum.Length) + totalSum);
+                approveTransactionBuilder.AppendLine("S U M A".PadRight(Constants.ReceiptWidth - totalSum.Length) + totalSum);
 
-                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReciptWidth, '-'));
+                approveTransactionBuilder.AppendLine("".PadRight(Constants.ReceiptWidth, '-'));
 
                 if (passedPaidValue > passedTotalAmmount)
                 {
 
                     var paidValue = passedPaidValue.ToString("0.00");
-                    approveTransactionBuilder.AppendLine("Gotówka".PadRight(Constants.ReciptWidth - totalSum.Length) + totalSum);
+                    approveTransactionBuilder.AppendLine("Gotówka".PadRight(Constants.ReceiptWidth - totalSum.Length) + totalSum);
 
                     var changeValue = (passedPaidValue - passedTotalAmmount).ToString("0.00");
-                    approveTransactionBuilder.AppendLine("Reszta".PadRight(Constants.ReciptWidth - changeValue.Length) + changeValue);
+                    approveTransactionBuilder.AppendLine("Reszta".PadRight(Constants.ReceiptWidth - changeValue.Length) + changeValue);
                 }
 
                 var printId = new Random().Next(0, 9999).ToString("0000");
                 var footerLeftLine = $"{printId} #Kasa: {state.PrinterCode}  Kasjer: {state.CashierLogin}";
                 var transactionTime = DateTime.Now.AddMinutes(state.TimeDiffrenceInMinutes).ToString("HH:mm");
-                approveTransactionBuilder.AppendLine(footerLeftLine.PadRight(Constants.ReciptWidth - transactionTime.Length) + transactionTime);
+                approveTransactionBuilder.AppendLine(footerLeftLine.PadRight(Constants.ReceiptWidth - transactionTime.Length) + transactionTime);
 
                 var fiscalIdAndLogo = "{PL} ABC " + new Random().Next(10000000, 99999999);
-                approveTransactionBuilder.AppendLine(fiscalIdAndLogo.PadCenter(Constants.ReciptWidth));
+                approveTransactionBuilder.AppendLine(fiscalIdAndLogo.PadCenter(Constants.ReceiptWidth));
                 approveTransactionBuilder.AppendLine();
 
                 foreach (var additionalLine in additionalLines)
                 {
-                    approveTransactionBuilder.AppendLine(additionalLine.PadCenter(Constants.ReciptWidth));
+                    approveTransactionBuilder.AppendLine(additionalLine.PadCenter(Constants.ReceiptWidth));
                 }
 
                 state.IsInTransactionState = false;
@@ -243,7 +243,7 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
 
 
             StringBuilder cancelReceiptBuilder = new StringBuilder();
-            cancelReceiptBuilder.AppendLine("A N U L O W A N Y".PadCenter(Constants.ReciptWidth));
+            cancelReceiptBuilder.AppendLine("A N U L O W A N Y".PadCenter(Constants.ReceiptWidth));
             var commandParameters = command.Parameters.Split((char)Constants.ASCICodeCR).Where(m => !string.IsNullOrWhiteSpace(m)).ToArray();
 
             var printerNo = "";
@@ -252,16 +252,16 @@ namespace ThermalFiscalPrinterSimulatorLibraries.Commands
             var specialNumberRow = "";
             if (commandParameters.Length == 1)
             {
-                specialNumberRow = commandParameters[0].PadCenter(Constants.ReciptWidth);
+                specialNumberRow = commandParameters[0].PadCenter(Constants.ReceiptWidth);
 
             }
             else if (commandParameters.Length > 0)
             {
                 printerNo = commandParameters[0];
                 cashierLogin = commandParameters.Length > 1 ? commandParameters[1] : "";
-                specialNumberRow = commandParameters.Length == 3 ? commandParameters[2].PadCenter(Constants.ReciptWidth) : "";
+                specialNumberRow = commandParameters.Length == 3 ? commandParameters[2].PadCenter(Constants.ReceiptWidth) : "";
 
-                cancelReceiptBuilder.AppendLine($"   #{printerNo}     {cashierLogin}".PadRight(Constants.ReciptWidth - actualTime.Length) + actualTime);
+                cancelReceiptBuilder.AppendLine($"   #{printerNo}     {cashierLogin}".PadRight(Constants.ReceiptWidth - actualTime.Length) + actualTime);
             }
             if (!string.IsNullOrWhiteSpace(specialNumberRow))
             {

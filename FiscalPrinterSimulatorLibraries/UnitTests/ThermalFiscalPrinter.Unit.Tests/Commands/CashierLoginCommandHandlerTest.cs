@@ -9,7 +9,7 @@ using ThermalFiscalPrinterSimulatorLibraries.Models;
 namespace ThermalFiscalPrinter.Unit.Tests.Commands
 {
     [TestFixture]
-    public class CasherLoginCommandHandlerTest
+    public class CashierLoginCommandHandlerTest
     {
         [Test]
         public void When_RTC_Clock_Not_Initialize_Should_Throw_Error()
@@ -99,7 +99,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
         }
 
         [Test]
-        public void When_Pass_Command_With_Right_Parameters_Shoudl_Return_Correct_Printout()
+        public void When_Pass_Command_With_Right_Parameters_Should_Return_Correct_Printout()
         {
             //Arrange
             var crChar = (char)ThermalFiscalPrinterSimulatorLibraries.Constants.ASCICodeCR;
@@ -109,7 +109,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             var state = new FiscalPrinterState()
             {
                 TimeDiffrenceInMinutes = 0,
-                FiscalPrinterHeader = "HEADER TEST".PadCenter(ThermalFiscalPrinterSimulatorLibraries.Constants.ReciptWidth)
+                FiscalPrinterHeader = "HEADER TEST".PadCenter(ThermalFiscalPrinterSimulatorLibraries.Constants.ReceiptWidth)
             };
             var command = new ThermalFiscalPrinterCommand(null, "#p", passedParameters, string.Empty, string.Empty);
             var handler = new CashierLoginCommandHandler(command);
@@ -132,7 +132,7 @@ namespace ThermalFiscalPrinter.Unit.Tests.Commands
             expectedPrintout.AppendLine($"    #{printerCode}     {cashierLogin}            {timeToString}");
             expectedPrintout.AppendLine("                12345678                ");
             expectedPrintout.AppendLine();
-            Assert.AreEqual(expectedPrintout.ToString(), result.OutputReciptBuffer);
+            Assert.AreEqual(expectedPrintout.ToString(), result.OutputReceiptBuffer);
         }
 
 

@@ -23,13 +23,13 @@ namespace ThermalFiscalPrinterSimulatorLibraries
                 case "$p":
                     return new ChangePTURatesCommandHandler(command);
                 case "$f":
-                    return new SetupReciptHeaderCommandHandler(command);
+                    return new SetupReceiptHeaderCommandHandler(command);
                 case "#u":
                     return new ReadingHeaderCommandHandler(command);
                 case "$r":
-                    return new SetupPaperKnifeHeightAndClientDisplayCommandHander(command);
+                    return new SetupPaperKnifeHeightAndClientDisplayCommandHandler(command);
                 case "#l":
-                    return new FeedPapperCommandHandler(command);
+                    return new FeedPaperCommandHandler(command);
                 case "#e":
                     return new SetupErrorHandlingCommandHandler(command);
                 case "#v":
